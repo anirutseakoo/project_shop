@@ -1,0 +1,88 @@
+   <!-- Main Navbar-->
+   <header class="header z-index-50 header_custom " >
+    <nav class="navbar py-3 px-0 shadow-sm text-white position-relative" >
+      <!-- Search Box-->
+      <div class="search-box shadow-sm">
+        <button class="dismiss d-flex align-items-center">
+          <svg class="svg-icon svg-icon-heavy">
+            <use xlink:href="#close-1"> </use>
+          </svg>
+        </button>
+        <form id="searchForm" action="#" role="search">
+          <input class="form-control shadow-0" type="text" placeholder="What are you looking for...">
+        </form>
+      </div>
+      <div class="container-fluid w-100">
+        <div class="navbar-holder d-flex align-items-center justify-content-between w-100">
+          <!-- Navbar Header-->
+          <div class="navbar-header">
+            <!-- Navbar Brand --><a class="navbar-brand d-none d-sm-inline-block" href="/">
+              <div class="brand-text d-none d-lg-inline-block"><span>Maruai</span><strong>Shop</strong></div>
+              <div class="brand-text d-none d-sm-inline-block d-lg-none"><strong>MS</strong></div></a>
+            <!-- Toggle Button--><a class="menu-btn active" id="toggle-btn" href="#"><span></span><span></span><span></span></a>
+          </div>
+          <!-- Navbar Menu -->
+          <ul class="nav-menu list-unstyled d-flex flex-md-row align-items-md-center">
+            <!-- Search-->
+            <li class="nav-item d-flex align-items-center"><a id="search" href="#">
+                <svg class="svg-icon svg-icon-xs svg-icon-heavy">
+                  <use xlink:href="#find-1"> </use>
+                </svg></a></li>
+            <!-- Logout    -->
+            
+            <li class="nav-item dropdown"> <a class="nav-link text-white" id="notifications" href="#" data-bs-toggle="dropdown" aria-expanded="false">
+             
+              <img class="avatar shadow-0 img-fluid rounded-circle" id="image_user" style="height: 30px !important; width: 30px !important; margin-right: 10px !important;" src="images/dog.jpg" alt="...">
+              <span class="d-none d-sm-inline mt-2" id="sd_name"></span></a>
+              
+            <ul class="dropdown-menu dropdown-menu-end mt-3 shadow-sm" aria-labelledby="notifications">
+              <li><a class="dropdown-item py-3" href="#"> 
+                  <div class="d-flex">
+                    <div class="icon icon-sm bg-blue">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" style="margin-right: 2px !important;"  fill="currentColor" class="bi bi-bag-check" viewBox="0 0 16 16">
+                      <path fill-rule="evenodd" d="M10.854 8.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L7.5 10.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
+                      <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5z"/>
+                    </svg>
+                    </div>
+                    <div class="ms-3"><span class="h6 d-block fw-normal mb-1 text-xs text-gray-600">ประวัติการสั่งซื้อ</span>
+                      <small class="small text-gray-600">แสดงประวัติการสั่งซื้อของฉัน</small></div>
+                  </div></a></li>
+              <li><a class="dropdown-item py-3" id="user_edit"> 
+                  <div class="d-flex">
+                    <div class="icon icon-sm bg-green">
+                      <svg class="svg-icon svg-icon-xs svg-icon-heavy">
+                        <use xlink:href="#checked-window-1"> </use>
+                      </svg>
+                    </div>
+                    <div class="ms-3"><span class="h6 d-block fw-normal mb-1 text-xs text-gray-600">บัญชีของฉัน</span>
+                      <small class="small text-gray-600">จัดการบัญชีของฉัน</small></div>
+                  </div></a></li>
+              <li><a class="dropdown-item py-3" href="/logout"> 
+                  <div class="d-flex">
+                    <div class="icon icon-sm bg-danger text-light">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" style="margin-right: 2px !important;" fill="currentColor" class="bi bi-box-arrow-right" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0v2z"/>
+                        <path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"/>
+                      </svg>
+                    </div>
+                    <div class="ms-3">
+                      <span class="h6 d-block fw-normal mb-1 text-xs text-gray-600">ออกจากระบบ</span>
+                      <small class="small text-gray-600">ออกจากการใช้งาน</small></div>
+                  </div></a></li>
+                                                     
+            </ul>
+          </li>
+          
+           
+         
+          </ul>
+         
+          
+         
+          </ul>
+         
+        </div>
+      </div>
+    </nav>
+  </header>
+  

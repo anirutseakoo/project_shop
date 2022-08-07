@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <%- include('styles'); -%>
+    <link rel="stylesheet" href="stylesheets/user.css">
+  </head>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Prompt:wght@300&display=swap');
+      *{
+        font-family: 'Prompt', sans-serif !important;
+      }
+  </style>
+  <body>
+    <!-- ===============================================-->
+    <!--    Main Content-->
+    <!-- ===============================================-->
+    <main class="main" id="top">
+    <%- include('navbar'); -%>
+    <div class="container mt-8">
+        <div class="row">
+            <%- include('menu'); -%>
+            <div class="col-9">
+                <div class="row">
+                    <div class="col-6">
+                        <h3 >ที่อยู่ของฉัน</h3>
+                      
+
+                    </div>
+                    <div class="col-6" style="text-align: right !important;">
+                        <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                            เพิ่มที่อยู่
+                        </button>
+                    </div>
+                    <table class="table" style="width: 100%;">
+                        <thead>
+                            <tr>
+                                <th>ชื่อ-นามสกุล</th>
+                                <th>ที่อยู่</th>
+                                <th>เบอร์โทรศัพท์</th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% address.forEach(function(ad){ %>
+                                <tr>
+                                    <td style="width: 20%" ><%= ad.name %></td>
+                                    <td style="width: 40%">
+                                        ที่อยู่: <span><%= ad.address %></span>
+                                        อำเภอ<span><%= ad.district %></span> 
+                                        จังหวัด <span><%= ad.province %></span>
+                                        รหัสไปรษณีย์<span><%= ad.code %></span>
+                                    </td  >
+                                    <td style="width: 20%">0<%= ad.phone %></td>
+                                    <td style="width: 5%">
+                                        <a  class="btn btn-outline-danger"
+                                    data-bs-toggle="modal" 
+                                    data-bs-target="#staticBackdrop_n" 
+                                    onclick="edit_address('<%= ad._id %>')">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                                    </a>
+                                  
+                                  
+                                    </td>
+                                    <td style="width: 5%">
+                                        <a  class="btn btn-outline-secondary"
+                                        onclick="delete_address('<%= ad._id %>')"
+                                        >
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                                        </a>
+                                    </td>
+                                </tr>
+                               
+                            <% }); %>
+                            
+                        </tbody>
+                    </table>
+                  
+                  
+                   
+                  
+                </div>
+            </div>
+         
+        </div>
+    </div>
+      <!-- Modal -->
+      <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="staticBackdropLabel">ที่อยู่ใหม่ </h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="/user_address" id="form_address" method="POST">
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <div class="form-group">
+                        <label for="">ชื่อ-นามสกุล</label>
+                        <input type="text" name="name" id="a_name" class="form-control" placeholder="กรุณากรอกชื่อ" aria-describedby="helpId">
+                        </div>
+                        <div class="form-group">
+                            <label for="">หมายเลขโทรศัพท์</label>
+                            
+                        </div>
+                        <div class="input-group mb-3">
+                    
+                            <span class="input-group-text" id="basic-addon1">+66</span>
+                            <input type="number" name="phone" id="a_phone" placeholder="กรุณากรอกหมายเลขโทรศัพท์" class="form-control" >
+                        </div>
+                        <div class="form-group">
+                            <label for="">จังหวัด</label>
+                            <input type="text" name="province" id="a_province" class="form-control" placeholder="กรุณากรอกจังหวัด" aria-describedby="helpId">
+                        </div>
+                        <div class="form-group">
+                            <label for="">อำเภอ/เขต</label>
+                            <input type="text" name="district" id="a_district" class="form-control" placeholder="กรุณากรอกอำเภอ/เขต" aria-describedby="helpId">
+                        </div>
+                        <div class="form-group">
+                            <label for="">รหัสไปรษณีย์</label>
+                            <input type="number" name="code" id="a_code" class="form-control" placeholder="กรุณากรอกรหัสไปรษณีย์" aria-describedby="helpId">
+                        </div>
+                        <div class="form-group">
+                        <label for="">รายละเอียดที่อยู่</label>
+                        <textarea name="address" id="a_address"  rows="5" class="form-control"></textarea>
+                    
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn btn-primary text-light" data-bs-dismiss="modal">ยกเลิก</button>
+                <button type="submit" class="btn btn-info" onclick="value_address()">ยืนยัน</button>
+                </div>
+            </form>
+        </div>
+        </div>
+    </div>
+    <!-- End Content -->
+      <!-- Modal -->
+    <div class="modal fade" id="staticBackdrop_n" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="staticBackdropLabel">เเก้ไขที่อยู่ใหม่ </h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form  id="form_address_n" method="POST">
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <div class="form-group">
+                        <label for="">ชื่อ-นามสกุล</label>
+                        <input type="text" name="name" id="n_name" class="form-control" placeholder="กรุณากรอกชื่อ" aria-describedby="helpId">
+                        </div>
+                        <div class="form-group">
+                            <label for="">หมายเลขโทรศัพท์</label>
+                            
+                        </div>
+                        <div class="input-group mb-3">
+                    
+                            <span class="input-group-text" id="basic-addon1">+66</span>
+                            <input type="number" name="phone" id="n_phone" placeholder="กรุณากรอกหมายเลขโทรศัพท์" class="form-control" >
+                        </div>
+                        <div class="form-group">
+                            <label for="">จังหวัด</label>
+                            <input type="text" name="province" id="n_province" class="form-control" placeholder="กรุณากรอกจังหวัด" aria-describedby="helpId">
+                        </div>
+                        <div class="form-group">
+                            <label for="">อำเภอ/เขต</label>
+                            <input type="text" name="district" id="n_district" class="form-control" placeholder="กรุณากรอกอำเภอ/เขต" aria-describedby="helpId">
+                        </div>
+                        <div class="form-group">
+                            <label for="">รหัสไปรษณีย์</label>
+                            <input type="number" name="code" id="n_code" class="form-control" placeholder="กรุณากรอกรหัสไปรษณีย์" aria-describedby="helpId">
+                        </div>
+                        <div class="form-group">
+                        <label for="">รายละเอียดที่อยู่</label>
+                        <textarea name="address" id="n_address"  rows="5" class="form-control"></textarea>
+                    
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-primary text-light" data-bs-dismiss="modal">ยกเลิก</button>
+                <button type="submit" class="btn btn-info" onclick="value_address_n()">ยืนยัน</button>
+                </div>
+            </form>
+        </div>
+        </div>
+    </div>
+    <!-- End Content -->
+     
+    
+
+      
+
+
+     
+    <%- include('footer'); -%>
+
+    </main>
+    <!-- ===============================================-->
+    <!--    End of Main Content-->
+    <!-- ===============================================-->
+
+
+
+    
+    <%- include('js'); -%>
+    <script>
+          var uri = window.location.toString();
+          var message = '<%= message %>'
+          $("#gender_e").val("<%= user.gender%>")
+    </script>
+    <script>
+            value_address=()=>{
+            event.preventDefault();
+            var name = $("#a_name").val();
+            var phone = $("#a_phone").val();
+            var province = $("#a_province").val();
+            var district = $("#a_district").val();
+            var code = $("#a_code").val();
+            var address = $("#a_address").val();
+            if(name == ''  || phone == '' || province == '' || district == '' ||
+            code == '' || address == ''  
+            ){
+                Swal.fire(
+                'เกิดข้อผิดพลาด?',
+                'กรุณากรอกข้อมูลให้ครบถ้วน',
+                'warning'
+                )
+            }else{
+            
+                if(phone.length !== 9){
+                    Swal.fire(
+                    'เกิดข้อผิดพลาด?',
+                    'กรุณากรอกหมายเลขโทรศัพท์ให้ถูกต้อง',
+                    'warning'
+                    )
+                }else{
+                    $("#form_address").submit();
+                }
+                
+                
+            }
+            }
+            value_address_n=()=>{
+            event.preventDefault();
+            var name = $("#n_name").val();
+            var phone = $("#n_phone").val();
+            var province = $("#n_province").val();
+            var district = $("#n_district").val();
+            var code = $("#n_code").val();
+            var address = $("#n_address").val();
+            if(name == ''  || phone == '' || province == '' || district == '' ||
+            code == '' || address == ''  
+            ){
+                Swal.fire(
+                'เกิดข้อผิดพลาด?',
+                'กรุณากรอกข้อมูลให้ครบถ้วน',
+                'warning'
+                )
+            }else{
+            
+                if(phone.length !== 9){
+                    Swal.fire(
+                    'เกิดข้อผิดพลาด?',
+                    'กรุณากรอกหมายเลขโทรศัพท์ให้ถูกต้อง',
+                    'warning'
+                    )
+                }else{
+                    $("#form_address_n").submit();
+                }
+                
+                
+            }
+            }
+            edit_address=(id)=>{
+            $.post('/info_address', { _id : id } , function(data){
+                //console.log(data)
+                $("#form_address_n").removeAttr("action");
+                $("#n_name").val(data.name);
+                $("#n_phone").val(data.phone);
+                $("#n_province").val(data.province);
+                $("#n_district").val(data.district);
+                $("#n_code").val(data.code);
+                $("#n_address").val(data.address);
+                $("#form_address_n").attr("action","/user_address_n?_id="+id);
+            })
+            }
+            delete_address=(id)=>{
+            Swal.fire({
+                title: 'คุณต้องการลบใช่หรือไม่?',
+                text: "กรุณากดตกลงหากคุณต้องการลบ",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'ตกลง',
+                cancelButtonText: 'ยกเลิก'
+                }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = '/delete_address?_id='+id
+                }
+                })
+            }
+    </script>
+
+  
+  </body>
+
+</html>

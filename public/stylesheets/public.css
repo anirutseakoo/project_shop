@@ -1,0 +1,28 @@
+.container{
+    margin-top: 1rem;
+}
+.login{
+ 
+    border-radius: 25px;
+    box-shadow: 10px 10px 8px 10px #c7c6c6;
+}
+.imagePublic{
+    background: url('/images/dog.jpg') no-repeat center center;
+    background-size: cover;
+    height: 700px;
+    border-top-left-radius: 25px;   
+    border-bottom-left-radius: 25px;   
+}
+
+.icon{
+    color: rgb(0, 0, 0);
+}
+.product_head{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* number of lines to show */
+    -webkit-box-orient: vertical;
+}
+
+

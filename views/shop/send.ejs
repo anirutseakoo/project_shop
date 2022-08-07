@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <%- include('styles'); -%>
+    <link rel="stylesheet" href="stylesheets/user.css">
+  </head>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Prompt:wght@300&display=swap');
+      *{
+        font-family: 'Prompt', sans-serif !important;
+      }
+  </style>
+  <body>
+    <!-- ===============================================-->
+    <!--    Main Content-->
+    <!-- ===============================================-->
+    <main class="main" id="top">
+    <%- include('navbar'); -%>
+    <div class="container mt-8">
+        <div class="row">
+            <%- include('menu'); -%>
+            <div class="col-9">
+              
+                  <div class="container">
+                    
+                    
+                      <div class="row ">
+                  
+                        <div class="col-lg-12">
+                
+                            <h3 class="">ที่ต้องจัดส่ง</h3>
+                            <% var i = 1  %> 
+                            <% lists.forEach(function(list){ %>
+                                <div class="container mb-3 p-4" style="box-shadow: 0px 0px 15px 0px #b3b2b2;">
+                                    <div class="row">
+                                        
+                                        <div class="col-9">
+                                            <% if(list.pay == 'bank') {%>
+                                               <table class="table">
+                                                   <thead>
+                                                       <th>ชำระผ่านธนาคาร</th>
+                                                       <th>เลขที่บัญชี</th>
+                                                       <th>ชื่อ</th>
+                                                   </thead>
+                                                   <tbody>
+                                                       <td>กสิกรไทย (K-bank)</td>
+                                                       <td>0403300535</td>
+                                                       <td>นายภานุพงศ์ แกล้วกล้า  </td>
+                                                   </tbody>
+                                               </table>
+                                               
+                                            <% } %>  
+                                            <% if(list.pay == 'ktb'){ %>
+                                               <table class="table">
+                                                   <thead>
+                                                       <th>ชำระผ่านธนาคาร</th>
+                                                       <th>เลขที่บัญชี</th>
+                                                       <th>ชื่อ</th>
+                                                   </thead>
+                                                   <tbody>
+                                                       <td>กรุงไทย (KTB)</td>
+                                                       <td>4800480701</td>
+                                                       <td>นายภานุพงศ์ แกล้วกล้า  </td>
+                                                   </tbody>
+                                               </table>
+                                            <% } %>
+                                           
+                                           
+                                        </div>
+                                        <div class="col-3 " >
+                                           <a  class="btn btn-outline-secondary mr-2 mt-3" 
+                                           data-bs-toggle="modal" data-bs-target="#productModal    "
+                                           onclick="list_product('<%= list._id %>' , '<%= i %>')">รายการสินค้า</a>
+                                           
+                                        </div>
+                                     
+                                        <div class="col-12">
+                                              
+                                           <div >
+                                               <span style="font-weight: bold;">ที่อยู่การจัดส่ง </span> <br> <%= list.address  %> 
+                                           </div>   
+                                       </div>
+                                     
+                                     
+                                        <div class="col-9">
+                                           <div style="float: right !important;">
+                                               <table>
+                                                   <tr>
+                                                       <td>ราคาสินค้า</td>
+                                                       <td>&nbsp;<%= list.price  %>&nbsp;</td>
+                                                       <td>บาท</td>    
+                                                   </tr>
+                                                   <tr>
+                                                       <td>ค่าจัดส่ง</td>
+                                                       <td>&nbsp;<%= list.cost %>&nbsp;</td>
+                                                       <td>บาท</td>
+                                                      
+                                                  </tr>
+                                                   <tr>
+                                                       <td>ราคารวม</td>
+                                                       <td>&nbsp;<%=  list.price + list.cost %>&nbsp;</td>
+                                                       <td>บาท</td>
+                                                   </tr>
+                                               </table>
+                                              
+                                            </div> 
+                                        </div>
+                                      
+                                       
+                                    </div>
+                                </div>
+                                <% i++ %> 
+                                
+                             <% }); %>
+                           
+                            
+                            
+                         </div>
+                          
+                         
+                      
+                      </div>
+                  </div> 
+            </div>
+          
+        </div>
+    </div>    
+    
+     
+    <%- include('footer'); -%>
+
+    </main>
+    <!-- ===============================================-->
+    <!--    End of Main Content-->
+    <!-- ===============================================-->
+<!-- Modal -->
+<div class="modal fade" id="productModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel" style="font-weight: bold !important;">ดูรายการสินค้า </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+            <div class="modal-body" >
+                <div class="container">
+                    <div class="row" id="show_product">
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+         
+            </div>
+     
+    </div>
+    </div>
+</div>
+<div class="modal fade" id="payModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel" style="font-weight: bold !important;">เลือกวิธีการชำระ </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+       
+            <div class="modal-body">
+               <div class="container">
+                   <div class="row">
+                      
+                       <h4 
+                           style="font-weight: bold !important;"
+                           >โอนชำระ/ผ่านธนาคาร</h4>
+                       <div class="col-4 mt-3">
+                            <img src="/images/ktb.png" alt="" style="width: 100%;">
+                       </div>
+                       <div class="col-8 mt-3">
+                      
+                        <p class="pl-2">
+                            ธนาคารกรุงไทย (KTB) <br>
+                            ชื่อบัญชี นายภานุพงศ์ แกล้วกล้า <br>
+                            เลขที่บัญชี 4800480701
+                        </p>
+                           
+                        <a class="btn btn-outline-info " onclick="pay('ktb')"
+                        style="width: 100% !important;"
+                        >ธนาคารกรุงไทย </a>
+                    </div>
+                    <div class="col-4 mt-5">
+                        <img src="/images/bank.png" alt="" style="width: 100%;">
+                    </div>
+                    <div class="col-8 mt-5">
+                      
+                        <p class="pl-2">
+                            ธนาคารกสิกรไทย (K-bank) <br>
+                            ชื่อบัญชี : นายภานุพงศ์ แกล้วกล้า <br>
+                            เลขที่บัญชี : 0403300535
+                        </p>
+                        <a  class="btn btn-outline-secondary " onclick="pay('bank')"
+                        style="width: 100% !important;"
+                        >ธนาคารกสิกรไทย (K-bank) </a>
+                    </div>
+
+                   </div>
+               </div>
+            </div>
+            <div class="modal-footer">
+         
+            </div>
+     
+    </div>
+    </div>
+</div> 
+
+
+    
+    <%- include('js'); -%>
+    <script>
+         var list_one = ''
+         function change_bank(list_id){
+            list_one = list_id
+           
+            //console.log(list_one )
+        }
+        function pay_now(i,_id){
+            var pathImage = $("#image"+i)[0].files[0];
+            var image = new FormData();
+            image.append('image',pathImage);
+            $.ajax({
+            url: '/list_image/'+_id,
+            data: image,
+            cache: false,
+            contentType: false,
+            processData: false,
+            method: 'POST',
+            type: 'POST', // For jQuery < 1.9
+            success: function(data){
+                if(data.message == 'success'){
+                    alert('success')
+                }
+               
+            }
+            })
+        }
+        function pay(bank){
+           
+           $.post( "/change_bank",
+           obj = {
+               pay : bank ,
+               _id : list_one
+              
+           }
+           ,function( data ) {
+               if(data.message == 'success'){
+                   window.location.href = '/paid'
+               }
+           }); 
+       }
+        function list_product(list_id , i){
+            $.post( "/list_product",
+            obj = {
+               list_id : list_id
+            }
+            ,function( data ) {
+            
+            var div = document.getElementById("show_product")
+                div.innerHTML = ''
+                data.forEach(one => 
+                
+                div.innerHTML += `
+                           <div class="col-4 mt-3">
+                                <img src="/upload/${one.color.image_name}" alt="" style="width: 100%;">
+                           </div>
+                           <div class="col-8 mt-5">
+                          
+                                <p class="pl-2">
+                                    ${one.product.name} <br>
+                                    จำนวน ${one.qty} ชิ้น 
+                                    ชิ้นละ${one.size.plus} บาท <br>
+                                    ราคารวม ${one.size.plus * one.qty }
+                                </p>
+                               
+                           
+                            </div>
+                `
+                )
+            }); 
+        }
+    </script>
+  
+  </body>
+
+</html>

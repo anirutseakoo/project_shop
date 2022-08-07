@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Bootstrap Material Admin by Bootstrapious.com</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="robots" content="all,follow">
+    <%- include('header1'); -%>
+    <link rel="stylesheet" href="stylesheets/product_detail.css">
+  </head>
+
+  <body>
+    <div class="page">
+      <%- include('navbar'); -%>
+      <div class="page-content d-flex align-items-stretch"> 
+        <!-- Side Navbar -->
+        <%- include('sidebar'); -%>
+        <div class="content-innerw-100" style="display: flex !important; justify-content: center !important;">
+            <main>
+                <div class="card mt-5">  
+                  <div class="card__body">
+                    <div class="half">
+                      <div class="featured_text">
+                        <h1  id="product_name"></h1>
+                        <p id="type_name" class="sub">ประเภทสินค้า</p>
+                        <p class="price">ราคา <span id="product_price"></span>บาท </p>
+                      </div>
+                      <div class="image" >
+                        <img id="product_image" >
+                      </div>
+                    </div>
+                    <div class="half">
+                      <div class="description" >
+                        <h4>รายละเอียดสินค้า</h4>
+                        <p id="product_description"></p>
+                      </div>
+                      <h4 class="mt-3">สี</h4>
+                      <div id="color_show" style="height: 50px;"> 
+                      </div>
+                      <h4 class="mt-2">Size</h4>
+                      <div id="size_show"   style="height: 50px;">
+                      </div>
+                      
+                      <h4 class="mt-3">จำนวน</h4>
+                      <div class="center">
+                       <div class="input-group">
+                              <span class="input-group-btn">
+                                  <button type="button" class="btn btn-outline-secondary btn-number"  data-type="minus" data-field="quant[2]">
+                                    <span class="glyphicon glyphicon-minus" onclick="check_num()">
+                                      -
+                                    </span>
+                                  </button>
+                              </span>
+                              <input type="text" name="quant[2]" class=" input-number"  id="quant" value="0" min="0" onchange="check_num()">
+                              <span class="input-group-btn">
+                                  <button type="button" class="btn btn-outline-secondary btn-number" data-type="plus" data-field="quant[2]">
+                                      <span class="glyphicon glyphicon-plus" onclick="check_num()">
+                                        +
+                                      </span>
+                                  </button>
+                              </span>
+                          </div>
+                     </div>
+                     <p class="mt-2" id="show_text_count"></p>
+                     
+                     
+                       
+                      <!-- <span class="stock">Size</span>
+                      <div class="reviews">
+                        <ul class="stars">
+                          <li><i class="fa fa-star"></i></li>
+                          <li><i class="fa fa-star"></i></li>
+                          <li><i class="fa fa-star"></i></li>
+                          <li><i class="fa fa-star"></i></li>
+                          <li><i class="fa fa-star-o"></i></li>
+                        </ul>
+                        <span>(64 reviews)</span>
+                      </div> -->
+                    </div>
+                  </div>
+                  <div class="card__footer">
+                    <div class="recommend">
+                      <p>Recommended by</p>
+                      <h3>Andrew Palmer</h3>
+                    </div>
+                    <div class="action">
+                      <button type="button" id="basket" onclick="buy_product('bus')">เพิ่มใส่รถเข็น</button>
+                    </div>
+                    <div class="action">
+                      <button type="button" id=buy_product onclick="buy_product('buy')">ซื้อสินค้า</button>
+                    </div>
+                  </div>
+                </div>
+              </main>
+            
+
+        </div>
+       
+         
+      </div>
+    </div>
+    <script>
+        var product_id = "<%= _id %>"
+        $( document ).ready(function() {
+          
+            $.post("/product_detail_one",{product_id : product_id},function(data){
+                //console.log(data)
+                var product_name = document.getElementById("product_name");
+                var type_name = document.getElementById("type_name");
+                var product_price = document.getElementById("product_price");
+                var product_image = document.getElementById("product_image");
+                var description = document.getElementById("product_description");
+                var show_money = `${data.plusA.plus} - ${data.plusD.plus}` 
+                if(data.plusA.plus == data.plusD.plus){
+                  show_money = `${data.plusA.plus}`
+                }
+                product_name.innerHTML += data.product[0].name
+                type_name.innerHTML += data.product[0].type[0].name
+                product_price.innerHTML += show_money
+                product_image.setAttribute("src","upload/"+data.color[0].image_name)
+                description.innerHTML += data.product[0].detail
+            })
+            
+            $.post("/product_detail_color",{product_id : product_id},function(data){
+              var color_show = document.getElementById("color_show");
+                for (let i = 0; i < data.length; i++) {
+                  color_show.innerHTML += `
+                
+                  <div class="form-check form-check-inline ">
+                    <input class="form-check-input" type="radio" name="name_color" onclick="product_count_color('radio_color${[i]}','${data[i].image_name}')" id="radio_color${[i]}" value="${data[i].name}">
+                    <label class="form-check-label" for="inlineRadio1">${data[i].name}</label>
+                  </div>
+                  
+                  `
+                }
+              })
+            $.post("/product_detail_size",{product_id : product_id},function(data){
+              var size_show = document.getElementById("size_show");
+                for (let i = 0; i < data.length; i++) {
+                  size_show.innerHTML += `
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="name_size"  onclick="product_count_size('radio_size${[i]}','${data[i].plus}')" id="radio_size${[i]}" value="${data[i].name}">
+                    <label class="form-check-label" for="inlineRadio1">${data[i].name}</label>
+                  </div>  
+                  `
+                }
+            })
+          });
+        var pub_color = ''
+        var pub_size = ''
+        product_count_size=(id,plus)=>{
+          //console.log(id,plus)
+          $('#quant').val('0');
+          var size = $('#'+id).val();
+          pub_size = $('#'+id).val();
+          var color_show = document.getElementById("color_show");
+          //pub_color = ''
+          check_stock()
+        }
+        product_count_color=(id,image)=>{
+          //console.log(id,image)
+          
+           $('#quant').val('0');
+          $("#product_image").removeAttr("src");
+          $("#product_image").attr("src","upload/"+image);
+          var color = $('#'+id).val();
+          pub_color = $('#'+id).val();
+          pub_size = ''
+          var div = document.getElementById("show_text_count");
+          div.innerHTML = ''
+          //console.log(pub_size)
+          var size_show = document.getElementById("size_show");
+          //var name = $("#"+id).val();
+          //console.log(name)
+          //console.log(color)
+          size_show.innerHTML = ''
+          $.post("/product_match_color",{product_id : product_id , color},function(data_){
+            //console.log(data_)
+
+            $.post("/product_detail_size",{product_id : product_id},function(data){
+              
+                for (let i = 0; i < data.length; i++) {
+                  data_.forEach(function(element) {
+                    
+                    if(element.size == data[i].name){
+                      size_show.innerHTML += `
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="name_size"  onclick="product_count_size('radio_size${[i]}','${data[i].plus}')" id="radio_size${[i]}" value="${data[i].name}">
+                        <label class="form-check-label" for="inlineRadio1">${data[i].name}</label>
+                      </div>  
+                      `
+                    }
+                  })   
+                  
+                }
+            })
+          })
+          check_stock()
+        }
+        check_stock=()=>{
+          if(pub_size !== '' && pub_color !== ''){
+            //console.log(pub_color , pub_size)
+            var div = document.getElementById("show_text_count");
+            div.innerHTML = ''
+            $.post("/show_stock_count",{
+              size:pub_size,
+              color:pub_color,
+              product_id : product_id
+            },function(data){
+              console.log(data)
+              if(data._id){
+                div.innerHTML += `Size ${pub_size} Color ${pub_color} 
+                                  มีสินค้าจำนวน <span id="data_num"> ${data.num}</span> ชิ้น` 
+              
+              }else{
+                div.innerHTML += `Size ${pub_size} Color ${pub_color} 
+                                  มีสินค้าจำนวน <span id="data_num"> 0 </span> ชิ้น` 
+              }
+            })
+
+          }
+         
+        }
+        check_num=()=>{
+          var num = $('#quant').val();
+          var num_stock = $('#data_num').text()
+          $('#quant').attr('max', num_stock);
+          //console.log(num_stock)
+      
+        }
+        buy_product=(BasOrBuy)=>{
+          var radio_color = document.getElementsByName("name_color");
+          var radio_size = document.getElementsByName("name_size");
+          var num = $('#quant').val();
+          var data_num = $('#data_num').text()
+          var color_ = ''
+          var size_ = ''
+          //console.log(radio_color,radio_size)
+          for (var i = 0, length = radio_color.length; i < length; i++) {
+            if (radio_color[i].checked) {
+              // do whatever you want with the checked radio
+              //console.log(radio_color[i].value);
+              color_ = radio_color[i].value
+              // only one radio can be logically checked, don't check the rest
+              break;
+            }
+          }
+          for (var i = 0, length = radio_size.length; i < length; i++) {
+            if (radio_size[i].checked) {
+              // do whatever you want with the checked radio
+              //console.log(radio_size[i].value);
+              size_ = radio_size[i].value
+              // only one radio can be logically checked, don't check the rest
+              break;
+            }
+          }
+         if(data_num.length < 1){
+          Swal.fire(
+            'เกิดข้อผิดพลาด?',
+            'กรุณาเลือก Size และ สี ก่อนซื้อสินค้า',
+            'warning'
+          );
+         }else{
+         
+          if(parseInt(data_num) == 0){
+            Swal.fire(
+            'สินค้าคงเหลือ 0 ชิ้น',
+            'สินค้าชนิดนี้หมด',
+            'warning'
+          );
+          }else{
+            if(parseInt(num) == 0){
+                  Swal.fire(
+                'เกิดข้อผิดพลาด?',
+                'กรุณากรอกจำนวนก่อนซื้อ',
+                'warning'
+              );
+            
+            }else{
+              let status = 0
+              if(BasOrBuy == 'buy'){
+                status = 1
+              }
+              //console.log( color_ ,size_  , parseInt(num) , product_id , status)
+              $.post("/basket",{
+                color_ ,
+                size_ ,
+                num : parseInt(num),
+                status ,
+                product_id
+              },function(data){
+             
+              })
+              
+            }
+          }
+          /*if(size_ == '' || color_ == ''){
+            Swal.fire(
+            'เกิดข้อผิดพลาด?',
+            'กรุณาเลือก Size และ สี ก่อนซื้อสินค้า',
+            'warning'
+          );
+          }else{
+            
+          }*/
+         }
+          
+        }
+        basket=()=>{
+          var radio_color = document.getElementsByName("name_color");
+          var radio_size = document.getElementsByName("name_size");
+          var num = $('#quant').val();
+          var data_num = $('#data_num').text()
+          var color_ = ''
+          var size_ = ''
+          //console.log(radio_color,radio_size)
+          for (var i = 0, length = radio_color.length; i < length; i++) {
+            if (radio_color[i].checked) {
+              // do whatever you want with the checked radio
+              //console.log(radio_color[i].value);
+              color_ = radio_color[i].value
+              // only one radio can be logically checked, don't check the rest
+              break;
+            }
+          }
+          for (var i = 0, length = radio_size.length; i < length; i++) {
+            if (radio_size[i].checked) {
+              // do whatever you want with the checked radio
+              //console.log(radio_size[i].value);
+              size_ = radio_size[i].value
+              // only one radio can be logically checked, don't check the rest
+              break;
+            }
+          }
+         if(data_num.length < 1){
+          Swal.fire(
+            'เกิดข้อผิดพลาด?',
+            'กรุณาเลือก Size และ สี ก่อนซื้อใส่ตระกร้า',
+            'warning'
+          );
+         }else{
+         
+          if(parseInt(data_num) == 0){
+            Swal.fire(
+            'สินค้าคงเหลือ 0 ชิ้น',
+            'สินค้าชนิดนี้หมด',
+            'warning'
+          );
+          }else{
+            if(parseInt(num) == 0){
+                  Swal.fire(
+                'เกิดข้อผิดพลาด?',
+                'กรุณากรอกจำนวนก่อนซื้อ',
+                'warning'
+              );
+            
+            }else{
+              console.log( color_ ,size_  , parseInt(num))
+            }
+          
+          }
+          /*if(size_ == '' || color_ == ''){
+            Swal.fire(
+            'เกิดข้อผิดพลาด?',
+            'กรุณาเลือก Size และ สี ก่อนซื้อสินค้า',
+            'warning'
+          );
+          }else{
+            
+          }*/
+         }
+          
+        }
+    </script>
+    <script>
+      $('.btn-number').click(function(e){
+      e.preventDefault();
+      
+      fieldName = $(this).attr('data-field');
+      type      = $(this).attr('data-type');
+      var input = $("input[name='"+fieldName+"']");
+      var currentVal = parseInt(input.val());
+      if (!isNaN(currentVal)) {
+          if(type == 'minus') {
+              
+              if(currentVal > input.attr('min')) {
+                  input.val(currentVal - 1).change();
+              } 
+              if(parseInt(input.val()) == input.attr('min')) {
+                  //$(this).attr('disabled', true);
+              }
+
+          } else if(type == 'plus') {
+
+              if(currentVal < input.attr('max')) {
+                  input.val(currentVal + 1).change();
+              }
+              if(parseInt(input.val()) == input.attr('max')) {
+                 // $(this).attr('disabled', true);
+              }
+
+          }
+      } else {
+          input.val(0);
+      }
+  });
+  $('.input-number').focusin(function(){
+    $(this).data('oldValue', $(this).val());
+  });
+  $('.input-number').change(function() {
+      
+      minValue =  parseInt($(this).attr('min'));
+      maxValue =  parseInt($(this).attr('max'));
+      valueCurrent = parseInt($(this).val());
+      
+      name = $(this).attr('name');
+      if(valueCurrent >= minValue) {
+          $(".btn-number[data-type='minus'][data-field='"+name+"']").removeAttr('disabled')
+      } else {
+         
+          Swal.fire(
+            'เกิดข้อผิดพลาด?',
+            'คุณกรอกสินค้าเกินจำนวนของใน Stock',
+            'warning'
+          );
+          $(this).val($(this).data('oldValue'));
+      }
+      if(valueCurrent <= maxValue) {
+          $(".btn-number[data-type='plus'][data-field='"+name+"']").removeAttr('disabled')
+      } else {
+        Swal.fire(
+            'เกิดข้อผิดพลาด?',
+            'คุณกรอกสินค้าเกินจำนวนของใน Stock',
+            'warning'
+          );
+          $(this).val($(this).data('oldValue'));
+      }
+      
+      
+  });
+  $(".input-number").keydown(function (e) {
+          // Allow: backspace, delete, tab, escape, enter and .
+          if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 190]) !== -1 ||
+              // Allow: Ctrl+A
+              (e.keyCode == 65 && e.ctrlKey === true) || 
+              // Allow: home, end, left, right
+              (e.keyCode >= 35 && e.keyCode <= 39)) {
+                  // let it happen, don't do anything
+                  return;
+          }
+          // Ensure that it is a number and stop the keypress
+          if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+              e.preventDefault();
+          }
+      });
+      </script>
+      <!-- JavaScript files-->
+      <%- include('footer1'); -%>
+      
+  </body>
+</html>

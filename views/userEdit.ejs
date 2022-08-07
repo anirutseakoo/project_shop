@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Bootstrap Material Admin by Bootstrapious.com</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="robots" content="all,follow">
+    <%- include('header1'); -%>
+    
+  </head>
+  <body>
+    <div class="page">  
+      <%- include('navbar_user'); -%>
+      <div class="page-content d-flex align-items-stretch"> 
+        <!-- Side Navbar -->
+        <%- include('sidebar_user'); -%>
+        <div class="modal fade" id="passwordModal" tabindex="-1" role="dialog">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <form action="/edit_password?_id=<%= data._id %>"  method="POST">
+                <div class="modal-header">
+                  
+                  
+                </div>
+                <div class="modal-body">
+                  <label for="">รหัสผ่านเก่า</label>
+   
+                  <input type="text" class="form-control" name="old_password"  id="old_password" placeholder="กรุณากรอกสี">
+                  <br>
+                  <label for="">รหัสผ่านใหม่</label>
+                  <input type="text" class="form-control " name="new_password"  id="new_password" placeholder="กรุณากรอกสี">
+                  <br>
+                  <label for="">รหัสผ่านใหม่</label>
+                  <input type="text" class="form-control" name="con_password"   id="con_password"placeholder="กรุณากรอกสี">
+                </div>
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-primary" >บันทึก</button>
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+     
+        <div class="container  mt-5">
+          
+          <h4 class=" h1 font-weight-bold mt-5">การตั้งค่าบัญชีทั่วไป</h4>
+            <div class="row ">
+        
+                <div class="col-8  my-auto">
+            <form id="editForm" action="/user_edit?_id=<%= data._id %>" method="POST">
+           
+              <div class="row ">
+               
+                <div class="pl-2 pr-2">
+                 
+                  <div class="row">
+                    <div class="col-12 mb-3">
+                      <h4 class="  font-weight-bold ">เเก้ไขรหัสผ่าน</h4>
+                      <div class="input-group mb-3">
+                        <input type="text" class="form-control" value="*****************" readonly placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                        <div class="input-group-append">
+                          <button class="btn btn-outline-secondary" type="button" data-target="#passwordModal" data-toggle="modal">แก้ไข</button>
+                        </div>
+                      </div>
+                     
+                    </div>  
+                    <h4 class="  font-weight-bold mt-1">ข้อมูลทั่วไป</h4>
+                    <div class="col-12 col-sm-12 col-md-12">
+                        <label for="">อีเมล์ผู้ใช้งาน</label> 
+                        <div class="input-group mb-3">
+                        
+                            <input value="<%= data.email %>" type="email" class="form-control" id="email" name="email" placeholder="กรอกอีเมล์" >
+                            
+                        </div>
+                      </div>
+                    <div class="col-12 col-sm-12 col-md-6">
+                      <label for="">ชื่อ</label>
+                      <input value="<%= data.firstname %>" type="text" class="form-control" id="firstname" name="firstname"  placeholder="กรอกชื่อ" >
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-6" >
+                      <label for="">นามสกุล</label>
+                      <input value="<%= data.lastname %>" type="text" class="form-control" id="lastname" name="lastname"  placeholder="กรอกนามสกุล" >
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-6 ">
+                      <label for="">เพศ</label>
+                      <select  class="form-control" type="text" id="gender" name="gender"    >
+                        <option value="" >--กรุณาเลือกเพศ--</option>
+                        <option value="ชาย" >ชาย</option>
+                        <option value="หญิง">หญิง</option>
+                      </select>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-6" >
+                      <label for="">เบอร์โทร</label>
+                      <input value="<%= data.phone %>" type="number" min="1" max="10" class="form-control" id="phone" name="phone" placeholder="เบอร์โทร">
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12">
+                      <label for="">ที่อยู่</label>
+                      <textarea class="form-control" id="address"  name="address" rows="4"></textarea>
+                    </div>  
+                    <div class="col-12 col-sm-12 col-md-12 mt-4 mb-3 text-center">
+                      <button type="submit" onclick="checkValues()" style="width: 100%;"  class="btn btn-primary btn-block">บันทึก</button>
+                     
+                    </div>  
+                  </div>
+                  </div>
+                  <div class="col-2"></div>
+              </div>
+              
+            </form>    
+                </div>
+                <div class="col-4">
+                  <div class="d-flex align-items-center justify-content-center" style="height: 100%;">
+                    
+                    <div class="form-group">
+                      <img id="image_name" alt="" style="height: 200px; width: 200px;">
+                      <input type="file" onchange="edit_image()" id="user_image" style="width: 200px !important;" class="form-control"  placeholder="Example input">
+                    </div>
+                  </div>
+                  
+                </div>
+                
+               
+            
+            </div>
+        </div> 
+        
+      </div>
+    </div>
+    <!-- JavaScript files-->
+   
+    <%- include('footer1'); -%>
+    <script src="javascripts/navbar_user.js"></script>
+    <script>
+      var uri = window.location.toString();
+      var gender = "<%= data.gender%>"
+      var address = "<%= data.address %>" 
+      var image_name = "<%= data.image_name %>" 
+      var _id = "<%= data._id %>" 
+      var message = "<%= message %>" 
+      $( document ).ready(function() {   
+          if(!image_name){
+            $("#image_name").attr("src","images/user_icon.jpg");
+          }else{
+            $("#image_name").removeAttr("src");
+            $("#image_name").attr("src","upload/"+image_name);
+          }
+          if(message == 'success'){
+            Swal.fire(
+              'สำเร็จ!!',
+              'เเก้ข้อมูลสำเร็จ',
+              'success'
+            )
+          }
+          if(message == 'null'){
+            Swal.fire(
+              'เกิดข้อผิดพลาด!!',
+              'กรุณาใส่ข้อมูลให้ครบ ',
+              'warning'
+            )
+          }
+          if(message == 'dont_'){
+            Swal.fire(
+              'เกิดข้อผิดพลาด!!',
+              'ใส่รหัสผ่านเก่าผิด ',
+              'warning'
+            )
+          }
+          if(message == 'null_'){
+            Swal.fire(
+              'เกิดข้อผิดพลาด!!',
+              'รหัสผ่านไม่ตรงกัน ',
+              'warning'
+            )
+          }
+        
+        
+          if(message == 'success_nomail'){
+            Swal.fire(
+              'สำเร็จ!!',
+              'เเต่ Email ไม่สามารถเปลี่ยนมีบัญชีอื่นลงทะเบียนแล้ว',
+              'warning'
+            )
+          }
+      })
+      $("#gender").val(gender)
+      $("#address").val(address)
+      checkValues=()=>{
+      event.preventDefault();
+      var form = document.forms["editForm"];
+    
+      var email = $("#email").val();
+    
+      var firstname = $("#firstname").val();
+      var lastname = $("#lastname").val();
+      var gender = $("#gender").val();
+      var phone = $("#phone").val();
+      var address = $("#address").val();
+      if(email == ''   || firstname == '' || lastname == '' || gender == '' ||
+        phone == '' || address == ''  
+      ){
+        Swal.fire(
+          'เกิดข้อผิดพลาด?',
+          'กรุณากรอกข้อมูลให้ครบถ้วน',
+          'warning'
+        )
+      }else{
+       
+          if(phone.length > 10  ){
+            Swal.fire(
+              'เกิดข้อผิดพลาด?',
+              'กรุณากรอกเบอร์โทรศัพท์ให้ถูกต้อง',
+              'warning'
+            )
+          }else{
+            form.submit();
+          }
+        
+       
+      }
+    }
+    edit_image=()=>{
+    //console.log(i)
+    var pathImage = $("#user_image")[0].files[0];
+    var image = new FormData();
+    image.append('image',pathImage)
+    $.ajax({
+      url: '/edit_userImage?_id='+_id,
+      data: image,
+      cache: false,
+      contentType: false,
+      processData: false,
+      method: 'POST',
+      type: 'POST', // For jQuery < 1.9
+      success: function(data){
+          if(data.message == 'success'){
+            window.location.href = '/user_edit?_id='+_id+'&message=success'
+          }
+        
+      }
+    });
+    }
+    if (uri.indexOf("&") > 0) {
+    var clean_uri = uri.substring(0, uri.indexOf("&"));
+     window.history.replaceState({}, document.title, clean_uri);
+    } 
+    </script>
+  </body>
+</html>

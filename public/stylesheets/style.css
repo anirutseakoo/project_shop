@@ -1,0 +1,39 @@
+@import url('https://fonts.googleapis.com/css2?family=Kanit:wght@200&display=swap');
+body{
+  font-family: 'Kanit', sans-serif;
+}
+.sidebar-item:hover{
+  font-family: 'Kanit', sans-serif;
+  background-color: none;
+  
+}
+.bi{
+  margin-right: 10px !important;
+}
+#bg3{
+  background-color: chocolate; height: 50%; width: 100% ; border-bottom: 5px solid white;
+}
+#bg4{
+  background-color: chocolate; height: 50%; width: 100% ;
+}
+.cardHover:hover{
+  transform: scale(1.1);
+ 
+}
+.product_head{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* number of lines to show */
+  -webkit-box-orient: vertical;
+}
+
+.login{
+  border: 1px solid black;
+}
+.register{
+  border-top: 1px solid black;
+  border-right: 1px solid black;
+  border-bottom: 1px solid black;
+}
+

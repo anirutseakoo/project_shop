@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <%- include('styles'); -%>
+    <link rel="stylesheet" href="stylesheets/user.css">
+  </head>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Prompt:wght@300&display=swap');
+      *{
+        font-family: 'Prompt', sans-serif !important;
+      }
+  </style>
+  <body>
+    <!-- ===============================================-->
+    <!--    Main Content-->
+    <!-- ===============================================-->
+    <main class="main" id="top">
+    <%- include('navbar'); -%>
+    <div class="container mt-8">
+        <div class="row">
+            <h3>ทำการสั่งซื้อ | Maruai</h3>
+            <div class="container">
+                <p class="mt-3 text-info "
+                style="font-weight: bold !important;"
+                >ที่อยู่การจัดส่ง</p>
+                <% if(!address[0]){ %> 
+                  
+                    <div class="row">
+                        <div class="col-8">
+                            <div class=" p-2  ">
+                                <textarea name="" id="address"  readonly 
+                                class="form-control">กรุณาเพิ่มที่อยู่ในการจัดส่ง</textarea>
+                            </div>
+                        </div>
+                        <div class="col-4"
+                        style="text-align: right !important;">
+                           <a  class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">เพิ่มที่อยู่</a>
+                         
+                        </div>
+                    </div>
+                   
+                   
+                <% }else{%> 
+                    <div class="row">
+                        <div class="col-8">
+                            <textarea name="" id="address"  readonly 
+                            class="form-control"><%= 
+                            address[0].name + ' (+66)' +  address[0].phone + ' '+
+                            address[0].address + ' อำเภอ' + address[0].district + ' จังหวัด' 
+                            + ' ' + address[0].province 
+                            %></textarea>
+                        </div>
+                        <div class="col-4">
+                            <a href="" class="btn  btn-outline-secondary"  data-bs-toggle="modal" data-bs-target="#change_address" >เปลี่ยนที่อยู่ </a>
+                            <a href="/address" class="btn  btn-outline-secondary">จัดการที่อยู่</a>
+                        </div>
+                       
+                    </div>
+                <% }  %> 
+                   
+                 
+            </div>
+            <div class="row">
+                <p class="mt-3 text-info "
+                style="font-weight: bold !important;"
+                >วิธีการชำระ</p>
+                <div class="col-8">
+                    <textarea name="" id="method_pay"  readonly 
+                    class="form-control">กรุณาเลือกวิธีการชำระ</textarea>
+                </div>
+                <div class="col-4"
+                style="text-align: right !important;"
+                >
+                
+                    <a class="btn btn-outline-secondary"
+                    data-bs-toggle="modal" data-bs-target="#payModal"
+                    >เลือกวิธีการชำระ</a>
+                </div>
+            </div>
+            <div class="col-12" style="float: center;">
+             
+              <table class="table mt-2">
+                  <thead>
+                      <tr>
+                        
+                          <th class="text-center" colspan="2" >สินค้า</th>
+                          <th class="">ไซส์</th>
+                          <th class="">สี</th>
+                          <th class="text-center">ราคาต่อชิ้น</th>
+                          <th class="text-center">จำนวน</th>
+                          <th>ราคารวม</th>
+                         
+                      </tr>
+                  </thead>
+                  <tbody>
+                    
+                      
+                      <% baskets.forEach(function(basket){ %>
+                         
+                          <tr>
+                             
+                              <td><img src="upload/<%= basket.color.image_name   %> "
+                                   alt=""
+                                   style="width: 80px; height: 80px; object-fit: cover;"
+                                   >
+                              </td>
+                              
+                              <td style="
+                              max-width: 180px;
+                              white-space: nowrap;
+                              overflow: hidden;
+                              text-overflow: ellipsis
+                              "><%= basket.product.name %></td>
+                              <td><%= basket.size.name %></td>
+                              <td><%= basket.color.name %></td>
+                              <td id="price" class="text-center"><%= basket.size.plus %>.00 </td>
+                              <td class="text-center">
+                                <%= basket.qty %>
+                              </td>
+                              <td id="sum" 
+                              
+                                  ><%= basket.qty * basket.size.plus %>.00</td>
+                             
+                          </tr>   
+                          
+                        
+                      <% }); %>   
+                      <tr>
+                        <td colspan="5" class=""></td>
+                        <td style="text-align: right;">  ค่าจัดส่ง </td>
+                        <td style="text-align: right;"> <span id="sum_cost"></span>.00 </td>
+                        <td>บาท</td>
+                      </tr>
+                      <tr>
+                        <td colspan="5"></td>
+                        <td  style="text-align: right;"> ราคาสินค้า<small>(<span id="sum_qty"></span>ชิ้น)</small></td>
+                        <td style="text-align: right;"> <span id="sum_price"></span>.00 </td>
+                        <td>บาท</td>
+                      </tr>
+                      <tr>
+                        <td colspan="5"></td>
+                        <td  style="text-align: right;">  ราคาทั้งหมด </td>
+                        <td style="text-align:right;"> <span id="sum_all"></span>.00</td>
+                        <td>บาท</td>
+                      </tr>
+                  </tbody>
+              </table>
+              
+            
+              
+            </div>
+            <div style="text-align: right;">
+                 
+                <span id="sum_qty"></span>
+               <span id="sum_cost"></span>
+               <a  class="btn btn-info text-right" onclick="pay_()">ยืนยันคำสั่งซื้อ</a>
+           </div>
+         
+        </div>
+    </div>
+    <div class="modal fade" id="payModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="staticBackdropLabel" style="font-weight: bold !important;">เลือกวิธีการชำระ </h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+           
+                <div class="modal-body">
+                   <div class="container">
+                       <div class="row">
+                          
+                           <h4 
+                               style="font-weight: bold !important;"
+                               >โอนชำระ/ผ่านธนาคาร</h4>
+                           <div class="col-4 mt-3">
+                                <img src="/images/ktb.png" alt="" style="width: 100%;">
+                           </div>
+                           <div class="col-8 mt-3">
+                          
+                            <p class="pl-2">
+                                ธนาคารกรุงไทย (KTB) <br>
+                                ชื่อบัญชี นายภานุพงศ์ แกล้วกล้า <br>
+                                เลขที่บัญชี 4800480701
+                            </p>
+                               
+                            <a class="btn btn-outline-info " onclick="pay('ktb')"
+                            style="width: 100% !important;"
+                            >ธนาคารกรุงไทย </a>
+                        </div>
+                        <div class="col-4 mt-5">
+                            <img src="/images/bank.png" alt="" style="width: 100%;">
+                        </div>
+                        <div class="col-8 mt-5">
+                          
+                            <p class="pl-2">
+                                ธนาคารกสิกรไทย (K-bank) <br>
+                                ชื่อบัญชี : นายภานุพงศ์ แกล้วกล้า <br>
+                                เลขที่บัญชี : 0403300535
+                            </p>
+                            <a  class="btn btn-outline-secondary " onclick="pay('bank')"
+                            style="width: 100% !important;"
+                            >ธนาคารกสิกรไทย (K-bank) </a>
+                        </div>
+
+                       </div>
+                   </div>
+                </div>
+                <div class="modal-footer">
+             
+                </div>
+         
+        </div>
+        </div>
+    </div> 
+    <div class="modal fade" id="change_address" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="staticBackdropLabel">ที่อยู่ใหม่ </h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+           
+                <div class="modal-body">
+                    <div class="container">
+                        <% var i = 1  %> 
+                        <% address.forEach(function(ad){ %>
+                            <div class="row mb-2">
+                                <div class="col-8">
+                                    <textarea name="" id="change<%= i %>"  readonly rows="5"
+                                    class="form-control"><%= 
+                                    ad.name + '  เบอร์โทรศัพท์  ' +'0'+ad.phone + ' '+
+                                    ad.address + ' อำเภอ' + ad.district + ' จังหวัด' 
+                                    +  ad.province + ' ' + ad.province 
+                                    %></textarea>
+                                </div>
+                                <div class="col-4"
+                                style="display: flex; align-items: center;">
+                                    
+                                    <a class="mb-1 btn btn-outline-secondary btn-block"
+                                    style="width: 100%;" onclick="change_address('<%= i %>')">
+                                    เลือก</a>
+                                </div>
+                               
+                            </div>
+                            <% i++ %> 
+                        <% }); %>
+                    </div>
+                </div>
+                <div class="modal-footer">
+             
+                </div>
+         
+        </div>
+        </div>
+    </div>
+     <!-- Modal -->
+     <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="staticBackdropLabel">ที่อยู่ใหม่ </h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="/user_address_pay" id="form_address" method="POST">
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <div class="form-group">
+                        <label for="">ชื่อ-นามสกุล</label>
+                        <input type="text" name="name" id="a_name" class="form-control" placeholder="กรุณากรอกชื่อ" aria-describedby="helpId">
+                        </div>
+                        <div class="form-group">
+                            <label for="">หมายเลขโทรศัพท์</label>
+                            
+                        </div>
+                        <div class="input-group mb-3">
+                    
+                            <span class="input-group-text" id="basic-addon1">+66</span>
+                            <input type="number" name="phone" id="a_phone" placeholder="กรุณากรอกหมายเลขโทรศัพท์" class="form-control" >
+                        </div>
+                        <div class="form-group">
+                            <label for="">จังหวัด</label>
+                            <input type="text" name="province" id="a_province" class="form-control" placeholder="กรุณากรอกจังหวัด" aria-describedby="helpId">
+                        </div>
+                        <div class="form-group">
+                            <label for="">อำเภอ/เขต</label>
+                            <input type="text" name="district" id="a_district" class="form-control" placeholder="กรุณากรอกอำเภอ/เขต" aria-describedby="helpId">
+                        </div>
+                        <div class="form-group">
+                            <label for="">รหัสไปรษณีย์</label>
+                            <input type="number" name="code" id="a_code" class="form-control" placeholder="กรุณากรอกรหัสไปรษณีย์" aria-describedby="helpId">
+                        </div>
+                        <div class="form-group">
+                        <label for="">รายละเอียดที่อยู่</label>
+                        <textarea name="address" id="a_address"  rows="5" class="form-control"></textarea>
+                    
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn btn-primary text-light" data-bs-dismiss="modal">ยกเลิก</button>
+                <button type="submit" class="btn btn-info" onclick="value_address()">ยืนยัน</button>
+                </div>
+            </form>
+        </div>
+        </div>
+    </div>
+    <!-- End Content -->     
+   
+    <%- include('footer'); -%>
+
+    </main>
+    <!-- ===============================================-->
+    <!--    End of Main Content-->
+    <!-- ===============================================-->
+
+
+
+    
+    <%- include('js'); -%>
+    <script>
+          var uri = window.location.toString();
+          var message = '<%= message %>'
+          $( document ).ready(function() {  
+            sum_(); 
+            if(message == 'deleted')
+            Swal.fire(
+                'สำเร็จ!!',
+                'ลบสินค้าในรถเข็นสำเร็จ',
+                'success'
+              )
+          })
+         
+
+    </script>
+    <script>
+        function pay_(){
+            var address = $('#address').text();
+            var pay = $('#method_pay').text();
+            var money =  Number($('#sum_price').text())
+            var cost =  Number($('#sum_cost').text())
+           if(address ==  'กรุณาเพิ่มที่อยู่ในการจัดส่ง'){
+                Swal.fire(
+                'เกิดข้อผิดพลาด!!',
+                'กรุณาเลือกที่อยู่จัดส่ง',
+                'warning'
+                )
+                
+           }else if(pay == 'กรุณาเลือกวิธีการชำระ'){
+            Swal.fire(
+                'เกิดข้อผิดพลาด!!',
+                'กรุณาเลือกวิธีการชำระ',
+                'warning'
+                )
+           }else{
+                if(pay == ` กสิกรไทย (K-bank) ชื่อบัญชี : นายภานุพงศ์ แกล้วกล้า  เลขที่บัญชี : 0403300535`){
+                    pay = 'bank'
+                   
+                }
+                if(pay == `กรุงไทย (KTB) ชื่อบัญชี นายภานุพงศ์ แกล้วกล้า  เลขที่บัญชี 4800480701`){
+                    pay = 'ktb'
+                  
+                }
+                $.post( "/list",obj={
+                    address ,
+                    pay ,
+                    money,
+                    cost
+
+                } ,function( data ) {
+                    if(data.message == 'success'){
+                        window.location.href = '/paid'
+                    }
+                    
+                }); 
+           }
+                    
+        }
+        function pay(bank){
+            if(bank == 'bank'){
+                $('#method_pay').html(
+                    ` กสิกรไทย (K-bank) ชื่อบัญชี : นายภานุพงศ์ แกล้วกล้า  เลขที่บัญชี : 0403300535`
+                );
+            }else{
+                $('#method_pay').html(`กรุงไทย (KTB) ชื่อบัญชี นายภานุพงศ์ แกล้วกล้า  เลขที่บัญชี 4800480701`);
+            }
+            $('#payModal').modal('hide');
+        }
+        function change_address(i){
+                $('#address').text( $('#change'+i).text())
+    
+                $('#change_address').modal('hide');
+        }
+     value_address=()=>{
+            event.preventDefault();
+            var name = $("#a_name").val();
+            var phone = $("#a_phone").val();
+            var province = $("#a_province").val();
+            var district = $("#a_district").val();
+            var code = $("#a_code").val();
+            var address = $("#a_address").val();
+            if(name == ''  || phone == '' || province == '' || district == '' ||
+            code == '' || address == ''  
+            ){
+                Swal.fire(
+                'เกิดข้อผิดพลาด?',
+                'กรุณากรอกข้อมูลให้ครบถ้วน',
+                'warning'
+                )
+            }else{
+            
+                if(phone.length !== 9){
+                    Swal.fire(
+                    'เกิดข้อผิดพลาด?',
+                    'กรุณากรอกหมายเลขโทรศัพท์ให้ถูกต้อง',
+                    'warning'
+                    )
+                }else{
+                    $("#form_address").submit();
+                }
+                
+                
+            }
+            }
+      function sum_(){
+            $.post( "/basket_sum", function( data ) {
+                $("#sum_price").html(data.sum);
+                $("#sum_cost").html(data.cost);
+                $("#sum_qty").html(data.qty);
+                $("#sum_all ").html(data.sum_all);
+                if(data.sum < 1){
+                  $("#sum_price").html(0);
+                $("#sum_cost").html(0);
+                $("#sum_qty").html(0);
+                $("#sum_all ").html(0);
+                }
+            }); 
+      }
+    </script>
+  
+
+  
+  </body>
+
+</html>

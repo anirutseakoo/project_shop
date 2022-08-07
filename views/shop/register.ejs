@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <%- include('styles'); -%>
+  </head>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Prompt:wght@300&display=swap');
+      *{
+        font-family: 'Prompt', sans-serif !important;
+      }
+  </style>
+  <body>
+    <!-- ===============================================-->
+    <!--    Main Content-->
+    <!-- ===============================================-->
+    <main class="main" id="top">
+    <%- include('navbar'); -%>
+    <section class="pt-6 bg-600" id="home" style="background-color: white !important;">
+        <div class="container  mt-5">
+			<div class="row ">
+				<div class="col-3"></div>
+				<div class="col-6 register  my-auto">
+					<form id="registerForm" action="/registerInsert" method="POST">
+						<div class="row ">
+						
+							<div class="pl-2 pr-2">
+							<h4 class="text-center font-weight-bold mt-5">ลงทะเบียนเพื่อเข้าสู่บัญชีร้านค้าของคุณ</h4>
+							<div class="row">
+								
+								<div class="col-12 col-sm-12 col-md-12">
+								<label for="">อีเมล์ผู้ใช้งาน</label> 
+								<input type="email" class="form-control" id="email" name="email" placeholder="กรอกอีเมล์" >
+								</div>
+								<div class="col-12 col-sm-12 col-md-12">
+								<label for="">รหัสผ่าน</label> 
+								<input type="password" class="form-control" id="password_" name="password" placeholder="รหัสผ่าน" >
+								<small class="text-secondary">รหัสผ่านต้องทั้งตัวเล็กและตัวใหญ่อย่างน้อย 8 ตัว เช่น Ex0526598541</small>
+								</div>
+								<div class="col-12 col-sm-12 col-md-12">
+								<label for="">ยืนยันรหัสผ่าน</label> 
+								<input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="รหัสผ่าน" >
+								<small class="text-secondary">กรอกรหัสผ่านให้ตรงกัน</small>
+								</div>
+								<div class="col-12 col-sm-12 col-md-6">
+								<label for="">ชื่อ</label>
+								<input type="text" class="form-control" id="firstname" name="firstname"  placeholder="กรอกชื่อ" >
+								</div>
+								<div class="col-12 col-sm-12 col-md-6" >
+								<label for="">นามสกุล</label>
+								<input type="text" class="form-control" id="lastname" name="lastname"  placeholder="กรอกนามสกุล" >
+								</div>
+								<div class="col-12 col-sm-12 col-md-6 ">
+								<label for="">เพศ</label>
+								<select class="form-control" type="text" id="gender" name="gender"  >
+									<option value="" disabled selected>--กรุณาเลือกเพศ--</option>
+									<option value="ชาย" selected>ชาย</option>
+									<option value="หญิง">หญิง</option>
+								</select>
+								</div>
+								<div class="col-12 col-sm-12 col-md-6" >
+								<label for="">เบอร์โทร</label>
+								<input type="number" class="form-control" id="phone" name="phone" max="10" placeholder="เบอร์โทร">
+								</div>
+								<div class="col-12 col-sm-12 col-md-12">
+								<label for="">ที่อยู่</label>
+								<textarea class="form-control" id="address"  name="address" rows="4"></textarea>
+								</div>  
+								<div class="col-12 col-sm-12 col-md-12 mt-4 mb-3 text-center">
+								<button type="submit" onclick="checkValues()" style="width: 100%;"  class="btn btn-outline-info btn-block">ยืนยันการสมัคร</button>
+								
+								</div>  
+							</div>
+							</div>
+							<div class="col-2"></div>
+						</div>
+					</form>       
+				</div>
+			
+			
+			</div>
+		</div> 
+      </section>
+     
+     
+    <%- include('footer'); -%>
+
+    </main>
+    <!-- ===============================================-->
+    <!--    End of Main Content-->
+    <!-- ===============================================-->
+
+
+
+    
+    <%- include('js'); -%>
+    <script>
+		var uri = window.location.toString();
+		var message = '<%= message %>'
+		
+	</script>
+   <script src="javascripts/register.js"></script>
+	
+
+  
+  </body>
+
+</html>

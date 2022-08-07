@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <%- include('styles'); -%>
+    <link rel="stylesheet" href="stylesheets/user.css">
+  </head>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Prompt:wght@300&display=swap');
+      *{
+        font-family: 'Prompt', sans-serif !important;
+      }
+  </style>
+  <body>
+    <!-- ===============================================-->
+    <!--    Main Content-->
+    <!-- ===============================================-->
+    <main class="main" id="top">
+    <%- include('navbar'); -%>
+    <div class="container mt-8">
+        <div class="row">
+            <div class="col-12">
+              <h3>การสั่งซื้อของฉัน</h3>
+              <table class="table mt-2">
+                  <thead>
+                      <tr>
+                          <th></th>
+                          <th class="" colspan="2" >สินค้า</th>
+                          <th class="">ไซส์</th>
+                          <th class="">สี</th>
+                          <th>ราคาต่อชิ้น</th>
+                          <th class="text-center">จำนวน</th>
+                          <th>ราคารวม</th>
+                          <th class="text-center">ลบ</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <% let i = 1 %> 
+                      <% let sum = 0 %> 
+                      <% baskets.forEach(function(basket){ %>
+                         
+                          <tr>
+                              <td>
+                                
+                                  <input onclick="status('<%= i %>','<%= basket._id %>')" 
+                                  class="form-check-input" type="checkbox"  
+                                  <% if(basket.status == 1){%> 
+                                      checked 
+                                  <% }  %> 
+                                  
+                                  value="" id="checkbox<%= i %>">
+                              </td>
+                              <td><img src="upload/<%= basket.color.image_name   %> "
+                                   alt=""
+                                   style="width: 80px; height: 80px; object-fit: cover;"
+                                   >
+                              </td>
+                              
+                              <td style="
+                              max-width: 180px;
+                              white-space: nowrap;
+                              overflow: hidden;
+                              text-overflow: ellipsis
+                              "><%= basket.product.name %></td>
+                              <td><%= basket.size.name %></td>
+                              <td><%= basket.color.name %></td>
+                              <td id="price<%= i %>" class="text-center"><%= basket.size.plus %>.00 </td>
+                              <td class="text-center">
+                                <div class="col-auto">
+                                  <ul class="list-inline ">
+                                      <li class="list-inline-item"><span class="btn btn-outline-secondary"  onclick="check_minus('<%= i %>','<%= basket._id %>')" id="btn-minus">-</span></li>
+                                      <li class="list-inline-item"><input type="text" name=""   
+                                        style="width: 80px !important;
+                                          border: none;
+                                          text-align: center;
+                                          padding-top: 7px;
+                                          padding-bottom: 7px;
+                                          background-color: transparent !important;
+                                       
+                                        "
+                                        class=""
+                                        onchange="check_qty('<%= i %>','<%= basket._id %>')"
+                                        min="0" id="var-value<%= i %>" value="<%= basket.qty %>"></li>
+                                      <li class="list-inline-item"><span class="btn btn-outline-secondary" onclick="check_plus('<%= i %>','<%= basket._id %>')" id="btn-plus">+</span></li>
+                                      <br>
+                                      <small>สินค้าคงเหลือ  <span id='stock_num<%= i %>' ><%= basket.stock.num %></span> ชิ้น</small>
+                                  </ul>
+                                 
+                              </div>
+                              </td>
+                              <td id="sum<%= i %>" 
+                              style="text-align: center;"
+                                  ><%= basket.qty * basket.size.plus %>.00</td>
+                              <td>
+                                  <a class="text-danger text-center hover" onclick="delete_basket('<%= basket._id %>')" >
+                                       ลบสินค้า
+                                  </a>
+                              </td>
+                          </tr>   
+                          <% i++  %> 
+                        
+                      <% }); %>   
+                      <tr>
+                        <td colspan="6" class=""></td>
+                        <td style="text-align: right;">  ค่าจัดส่ง </td>
+                        <td style="text-align: right;"> <span id="sum_cost"></span>.00 </td>
+                        <td>บาท</td>
+                      </tr>
+                      <tr>
+                        <td colspan="6"></td>
+                        <td  style="text-align: right;"> ราคาสินค้า<small>(<span id="sum_qty"></span>ชิ้น)</small></td>
+                        <td style="text-align: right;"> <span id="sum_price"></span>.00 </td>
+                        <td>บาท</td>
+                      </tr>
+                      <tr>
+                        <td colspan="6"></td>
+                        <td  style="text-align: right;">  ราคาทั้งหมด </td>
+                        <td style="text-align:right;"> <span id="sum_all"></span>.00</td>
+                        <td>บาท</td>
+                      </tr>
+                  </tbody>
+              </table>
+              
+            
+              <div style="text-align: right;">
+                 
+                   <span id="sum_qty"></span>
+                  <span id="sum_cost"></span>
+                  <a  class="btn btn-info text-right" onclick="buy_basket()">สั่งสินค้า</a>
+              </div>
+            </div>
+         
+        </div>
+    </div>
+   
+    <%- include('footer'); -%>
+
+    </main>
+    <!-- ===============================================-->
+    <!--    End of Main Content-->
+    <!-- ===============================================-->
+
+
+
+    
+    <%- include('js'); -%>
+    <script>
+          var uri = window.location.toString();
+          var message = '<%= message %>'
+          $( document ).ready(function() {  
+            sum_(); 
+            if(message == 'deleted')
+            Swal.fire(
+                'สำเร็จ!!',
+                'ลบสินค้าในรถเข็นสำเร็จ',
+                'success'
+              )
+          })
+         
+
+    </script>
+    <script>
+      function buy_basket(){
+            var sum = Number($('#sum_all').text())
+            if(sum < 1){
+                Swal.fire(
+                'คำเตือน?',
+                'กรุณาเลือกสินค้าก่อนยืนยันคำสั่งซื้อ',
+                'warning'
+                )
+            }else{
+                window.location.href = '/pay'
+            }
+        }
+      function sum_(){
+            $.post( "/basket_sum", function( data ) {
+                $("#sum_price").html(data.sum);
+                $("#sum_cost").html(data.cost);
+                $("#sum_qty").html(data.qty);
+                $("#sum_all ").html(data.sum_all);
+                if(data.sum < 1){
+                  $("#sum_price").html(0);
+                $("#sum_cost").html(0);
+                $("#sum_qty").html(0);
+                $("#sum_all ").html(0);
+                }
+            }); 
+      }
+      function check_qty(i,basket_id){
+        var val = Number($('#var-value'+i).val());
+        var stock = Number($('#stock_num'+i).text());
+        var price = Number($('#price'+i).text());
+        $('#sum'+i).text((val*price)+'.00');
+        if(val > stock){
+          $('#var-value'+i).val(stock)
+          $('#sum'+i).text((stock*price)+'.00');
+        }
+        if( val < 0){
+          $('#var-value'+i).val(1)
+          $('#sum'+i).text((1*price)+'.00');
+        }
+        sum_();
+        qty(i,basket_id)
+      }
+      function check_minus(i,basket_id){
+        var val = $("#var-value"+i).val();
+        var price = Number($('#price'+i).text());
+            val = (val=='1')?val:val-1;
+            $('#sum'+i).text((val*price)+'.00');
+            $("#var-value"+i).val(val); 
+            qty(i,basket_id)
+            sum_();
+            return false;
+      }
+      function check_plus(i,basket_id){
+        var stock = Number($('#stock_num'+i).text());
+        var val = Number($('#var-value'+i).val());
+        var price = Number($('#price'+i).text());
+       
+            if(val < stock){
+              val++;
+              $("#var-value"+i).val(val);
+              $('#sum'+i).text((val*price)+'.00');
+              qty(i,basket_id)
+              sum_();
+              return false;
+            }    
+      }
+      function delete_basket(basket_id){
+        Swal.fire({
+            title: 'คุณต้องการลบใช่หรือไม่?',
+            text: "กรุณากดตกลงหากคุณต้องการลบ",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'ตกลง',
+            cancelButtonText: 'ยกเลิก'
+            }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = '/basket_delete?_id='+ basket_id
+            }
+            })
+        }
+      function qty(i,basket_id){
+            var qty = Number($('#var-value'+i).val());
+            $.post( "/basket_qty",obj={
+                qty : Number(qty),
+                basket_id :basket_id
+            }, function( data ) {
+                if(data){
+                    sum_();
+                }
+            });  
+        
+           
+        }
+     </script>
+     <script>
+        function status(i,_id){
+            var status
+            if (document.getElementById('checkbox'+i).checked == true) {
+                status = 1
+               
+            } else {
+                status = 0
+                
+            }
+            $.post( "/basket_status",obj={
+               status : status,
+               _id : _id
+            }); 
+            sum_();
+        }
+        if (uri.indexOf("?") > 0) {
+          var clean_uri = uri.substring(0, uri.indexOf("?"));
+          window.history.replaceState({}, document.title, clean_uri);
+        }
+        
+     </script>
+  
+
+  
+  </body>
+
+</html>

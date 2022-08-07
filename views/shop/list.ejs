@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <%- include('styles'); -%>
+  </head>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Prompt:wght@300&display=swap');
+      *{
+        font-family: 'Prompt', sans-serif !important;
+      }
+      #pills-tab-women li button:hover{
+        background-color: #FE7A15;
+        color: white;
+        margin-left: 2px;
+
+      }
+  </style>
+  <body>
+    <!-- ===============================================-->
+    <!--    Main Content-->
+    <!-- ===============================================-->
+    <main class="main" id="top">
+    <%- include('navbar'); -%>
+    <section id="categoryWomen">
+        <div class="container">
+          <div class="row h-100">
+            <div class="col-lg-7 mx-auto text-center mb-3">
+              <h5 class="fw-bold fs-3 fs-lg-5 lh-sm mb-3">รายการสินค้า</h5>
+            </div>
+            <div class="col-12">
+              <nav>
+                <div class="nav nav-tabs majestic-tabs mb-4 justify-content-center" id="nav-tab" role="tablist">
+                  <a class="nav-link active" id="nav-all-tab" href="/list" 
+                  role="tab" aria-controls="nav-women"   aria-selected="true">ทั้งหมด</a>
+                  <button class="nav-link " id="nav-women-tab" 
+                  role="tab" aria-controls="nav-women" onclick="list_('female')" aria-selected="true">ผู้หญิง</button>
+                  <button class="nav-link " id="nav-men-tab"    
+                  role="tab" aria-controls="nav-men" onclick="list_('male')">ผู้ชาย</button>
+                  <button class="nav-link" id="nav-kid-tab" 
+                  role="tab" aria-controls="nav-men"  onclick="list_('kid')">เด็ก</button>
+
+                  
+                </div>
+                <div style="height: 50px;">
+                    <ul class="nav nav-pills justify-content-center " id="pills-tab-women" role="tablist">
+                       
+                    </ul>
+                </div>
+                <div class="container">
+                   
+                    <div class="row h-100" id="product_all">
+                      
+                      
+                    </div>
+                </div>
+           
+              </nav>
+            </div>
+          </div>
+        </div>
+      </section> 
+     
+   
+    <%- include('footer'); -%>
+
+    </main>
+    <!-- ===============================================-->
+    <!--    End of Main Content-->
+    <!-- ===============================================-->
+
+
+
+    
+    <%- include('js'); -%>
+    <script>
+     
+     
+    $( document ).ready(function() {   
+        $.post("/showType", function(result){
+            var div = document.getElementById("pills-tab-women")   
+            result.female.forEach(element =>  
+            div.innerHTML += `
+            <li class="nav-item" role="presentation">
+                <button class="nav-link  " id="pills-wtshirt-tab"
+                data-bs-toggle="pill" data-bs-target="#pills-wtshirt" 
+                type="button" role="tab" aria-controls="pills-wtshirt" 
+                aria-selected="true" onclick="list_type('${element._id}')">${element.name}</button>
+            </li>
+            `
+            );
+        }); 
+  
+    });
+    function list_(gender){
+        var div = document.getElementById("pills-tab-women");
+        div.innerHTML = ''
+        if(gender == 'kid'){
+            $('#nav-women-tab').removeClass('active');
+            $('#nav-men-tab').removeClass('active');
+            $('#nav-all-tab').removeClass('active');
+            $('#nav-kid-tab').addClass('active');
+            $.post("/showType", function(result){
+           
+           result.kid.forEach(element =>  
+           div.innerHTML += `
+           <li class="nav-item" role="presentation">
+               <button class="nav-link " id="pills-wtshirt-tab"
+               data-bs-toggle="pill" data-bs-target="#pills-wtshirt" 
+               type="button" role="tab" aria-controls="pills-wtshirt" 
+               aria-selected="true" onclick="list_type('${element._id}')">${element.name}</button>
+           </li>
+           `
+           );
+        
+       }); 
+        }
+        if(gender == 'male'){
+            $('#nav-women-tab').removeClass('active');
+            $('#nav-kid-tab').removeClass('active');
+            $('#nav-all-tab').removeClass('active');
+            $('#nav-men-tab').addClass('active');
+            
+            $.post("/showType", function(result){
+            
+           result.man.forEach(element =>  
+           
+           div.innerHTML += `
+           <li class="nav-item" role="presentation">
+               <button class="nav-link " id="pills-wtshirt-tab"
+               data-bs-toggle="pill" data-bs-target="#pills-wtshirt" 
+               type="button" role="tab" aria-controls="pills-wtshirt" 
+               aria-selected="true" onclick="list_type('${element._id}')">${element.name}</button>
+           </li>
+           `
+           );
+        
+       }); 
+        }
+        if(gender == 'female'){
+            $('#nav-kid-tab').removeClass('active');
+            $('#nav-men-tab').removeClass('active');
+             $('#nav-all-tab  ').removeClass('active');
+            $('#nav-women-tab').addClass('active');
+            $.post("/showType", function(result){
+           
+           result.female.forEach(element =>  
+           div.innerHTML += `
+           <li class="nav-item" role="presentation">
+               <button class="nav-link " id="pills-wtshirt-tab"
+               data-bs-toggle="pill" data-bs-target="#pills-wtshirt" 
+               type="button" role="tab" aria-controls="pills-wtshirt" 
+               aria-selected="true" onclick="list_type('${element._id}')">${element.name}</button>
+           </li>
+           `
+           );
+        
+       }); 
+        }
+       
+    }
+    function list_type(id){
+      $.post("/productType_show",{id_find:id},function(result){
+      //console.log(result)
+  
+      var product_new3 = document.getElementById("product_all");
+      product_new3.innerHTML = ''
+      for (let i = 0; i < result.length; i++) {
+        console.log(result[i]._id)
+        obj = {
+        product:result[i]._id
+        }
+        $.post("/product_show_image",obj,function(show_image){
+          //  console.log(show_image)
+          var show_money = `${show_image.plusA.plus} - ${show_image.plusD.plus}` 
+          if(show_image.plusA.plus == show_image.plusD.plus){
+            show_money = `${show_image.plusA.plus}`
+          }
+          if(show_image.data.image_name){
+            product_new3.innerHTML += `
+            <div class="col-sm-6 col-md-3 mb-3 mb-md-0 h-100" onclick="go_detail('${result[i]._id}')">
+          <div class="card card-span h-100 text-white">
+            <img class="img-fluid h-100" src="upload/${show_image.data.image_name}" />
+            <div class="card-img-overlay ps-0"> </div>
+            <div class="card-body ps-0 bg-200">
+              <h5 class="fw-bold text-1000 text-truncate">
+              ${result[i].name  }
+            
+              </h5>
+              <div class="fw-bold">
+                <span class="text-600 me-2 ">ราคา</span>
+                <span class="text-primary">${show_money} บาท</span> <br/>
+               
+              </div>
+              
+            </div><a class="stretched-link" href="#"></a>
+          </div>
+        </div>
+            `
+          }
+        })
+      
+        
+      }
+      });
+    }
+    </script>
+    <script src="javascripts/productAll.js"></script>
+  
+  </body>
+
+</html>

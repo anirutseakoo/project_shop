@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maruai</title>
+    <%- include('header'); -%>
+</head>
+<body class="hold-transition sidebar-mini">
+    <div class="wrapper">
+      <!-- Navbar -->
+        <%- include('adminHeader'); -%>
+      <!-- /.navbar -->
+    
+      <!-- Main Sidebar Container -->
+        <%- include('adminSidebar'); -%>
+    
+      <!-- Content Wrapper. Contains page content -->
+      <div class="content-wrapper">
+        <div class="container pl-5 mt-5">
+          <div class="row">
+            <div class="col-12">
+              <h3 class="font-weight-bold ">ประเภทสินค้า</h3>
+              <p>หากต้องการเพิ่มประเภทสินค้ากรุณากรอกข้อมูล</p>
+            </div>
+           
+          </div>
+        </div>
+        <div class="container pl-5 mb-4">
+          <div class="row">
+            <form id="typeForm" action="/typeInsert" method="POST">
+              <div class="col">
+                <div class="input-group">
+                  <input type="text" class="form-control" id="type" name="type" placeholder="กรอกประเภทสินค้า" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                  <select class="form-select form-control" name="gender" id="gender" >
+                    <option value="" selected>-----กรุณาเลือกหมวดสินค้า-----</option>
+                    <option value="ชาย" >ชาย</option>
+                    <option value="หญิง" >หญิง</option>    
+                    <option value="เด็ก" >เด็ก</option>        
+                  </select>
+                  <div class="input-group-append">
+                    <button class="btn btn-outline-success font-weight-bold" type="submit">บันทึก</button>
+                    <button class="btn btn-outline-secondary font-weight-bold" type="reset">ยกเลิก</button>
+                  </div>
+                </div>  
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="container pl-2 ">
+          <div class="row">
+            <div class="col-12">
+              <table class="table typeTable">
+                <thead class="">
+                  <tr>
+                    <th scope="col">ชื่อประเภท</th>
+                    <th scope="col">หมวดสินค้า</th>
+                    <th scope="col">เเก้ไขโดย</th>
+                    <th scope="col">เเก้ไขล่าสุด</th>
+                    <th scope="col">เเก้ไข</th>
+                    <th scope="col">สถานะ</th>
+                  </tr>
+                </thead> 
+                <tbody>
+                  <% types.forEach(function(type){ %> 
+                    <tr>
+                      <td><%= type.name  %> </td>
+                      <td><%= type.gender  %> </td>
+                      <td><%= type.user.firstname %> </td>
+                      <td><%= moment(type.updated).format('Do MMMM YYYY')  %></td>
+                      <td><a onclick="typeEdit('<%= type._id %>')" class="btn btn-outline-primary">เเก้ไข</a></td>
+                      <td> <a onclick=" confirmDelete('<%= type._id %>')" class="btn btn-outline-danger">ปิดการใช้งาน</a></td>
+                    </tr>
+                  <% }) %> 
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="modal fade" id="editModal" tabindex="-1">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">เเก้ไขประเภทสินค้า</h5>
+              
+              </div>
+              <div class="modal-body">
+                <form id="typeEditForm" action="/typeEdit" method="POST">
+                  <div class="col">
+                    <div class="input-group">
+                      <input type="text" class="form-control d-none" id="typeId" name="typeId" placeholder="กรอกประเภทสินค้า" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                      <input type="text" class="form-control" id="typeName" name="typeName" placeholder="กรอกประเภทสินค้า" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                      <br>
+                      <select class="form-select form-control" name="typeGender" id="typeGender" >
+                        <option value="" selected>-----กรุณาเลือกหมวดสินค้า-----</option>
+                        <option value="ชาย" >ชาย</option>
+                        <option value="หญิง" >หญิง</option>    
+                        <option value="เด็ก" >เด็ก</option>        
+                      </select>
+                      <div class="input-group-append">
+                        <button class="btn btn-outline-secondary font-weight-bold" type="reset">รีเซ็ต</button>
+                      </div>
+                    </div>  
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิดหน้าต่าง</button>
+                    <button type="submit" class="btn btn-primary">บันทึก</button>
+                  </div>
+                </form>
+              </div>
+            
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- /.content-wrapper -->
+    
+      <!-- Control Sidebar -->
+      <aside class="control-sidebar control-sidebar-dark">
+        <!-- Control sidebar content goes here -->
+      </aside>
+      <!-- /.control-sidebar -->
+    
+      <!-- Main Footer -->
+      <!-- <footer class="main-footer">
+        <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong>
+        All rights reserved.
+        <div class="float-right d-none d-sm-inline-block">
+          <b>Version</b> 3.1.0
+        </div>
+      </footer> -->
+    </div>
+    <!-- ./wrapper -->
+    
+    <%- include('footer'); -%>
+    <script>
+      var message = '<%= message%>'
+      var uri = window.location.toString(); 
+    </script>
+    <script src="javascripts/typeadmin.js"></script>
+</body>
+</html>

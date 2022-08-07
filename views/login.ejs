@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+	
+	<%- include('header1'); -%>
+
+</head>
+<body>
+	<%- include('navbar'); -%> 
+
+	<div class="container  mt-5">
+		<div class="row ">
+      <div class="col-12 login">
+    
+        <div class="d-flex align-items-center px-0 px-lg-5 h-100">
+          <form class="login-form py-5   w-100" id="loginFrom" action="login" method="POST">
+            <div class="input-material-group mb-3">
+              <h4 class="font-weight-bold">ลงทะเบียนเพื่อเข้าสู่บัญชีร้านค้าของคุณ</h4>
+            </div>
+			<div class="col-12 col-sm-12 col-md-12">
+				<label for="">Email</label> 
+				<input type="email" class="form-control" id="username" name="username" placeholder="กรอกอีเมล์" >
+			  </div>
+			  <div class="col-12 col-sm-12 col-md-12">
+				<label for="">Password</label> 
+				<input type="email" class="form-control" id="password" name="password" placeholder="กรอกรหัสผ่าน" >
+			  </div>
+            <!-- <div class="input-material-group mb-3">
+				
+              <input class="input-material"  type="text" id="username" name="username" autocomplete="off" required data-validate-field="loginUsername">
+              <label class="label-material" for="login-username">User Name</label>
+            </div>
+            <div class="input-material-group mb-4">
+              <input class="input-material"  type="password" id="password" name="password"  required data-validate-field="loginPassword">
+              <label class="label-material" for="login-password">Password</label>
+            </div> -->
+            <button class="btn btn-primary mb-3 mt-3"  type="submit">Login</button><br>
+			<!-- <a class="text-sm text-paleBlue" href="#">Forgot Password?</a><br>
+			<small class="text-gray-500">Do not have an account? </small>
+			<a class="text-sm text-paleBlue"href="/register">Signup</a> -->
+          </form>
+        </div>
+	 </div>
+      <div class="col-6 register  my-auto">
+        <form id="registerForm" action="/registerInsert" method="POST">
+          <div class="row ">
+           
+            <div class="pl-2 pr-2">
+              <h4 class="text-center font-weight-bold mt-5">ลงทะเบียนเพื่อเข้าสู่บัญชีร้านค้าของคุณ</h4>
+              <div class="row">
+                
+                <div class="col-12 col-sm-12 col-md-12">
+                  <label for="">อีเมล์ผู้ใช้งาน</label> 
+                  <input type="email" class="form-control" id="email" name="email" placeholder="กรอกอีเมล์" >
+                </div>
+                <div class="col-12 col-sm-12 col-md-12">
+                  <label for="">รหัสผ่าน</label> 
+                  <input type="password" class="form-control" id="password_" name="password" placeholder="รหัสผ่าน" >
+                  <small class="text-secondary">รหัสผ่านต้องทั้งตัวเล็กและตัวใหญ่อย่างน้อย 8 ตัว เช่น Ex0526598541</small>
+                </div>
+                <div class="col-12 col-sm-12 col-md-12">
+                  <label for="">ยืนยันรหัสผ่าน</label> 
+                  <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="รหัสผ่าน" >
+                  <small class="text-secondary">กรอกรหัสผ่านให้ตรงกัน</small>
+                </div>
+                <div class="col-12 col-sm-12 col-md-6">
+                  <label for="">ชื่อ</label>
+                  <input type="text" class="form-control" id="firstname" name="firstname"  placeholder="กรอกชื่อ" >
+                </div>
+                <div class="col-12 col-sm-12 col-md-6" >
+                  <label for="">นามสกุล</label>
+                  <input type="text" class="form-control" id="lastname" name="lastname"  placeholder="กรอกนามสกุล" >
+                </div>
+                <div class="col-12 col-sm-12 col-md-6 ">
+                  <label for="">เพศ</label>
+                  <select class="form-control" type="text" id="gender" name="gender"  >
+                    <option value="" disabled selected>--กรุณาเลือกเพศ--</option>
+                    <option value="ชาย" selected>ชาย</option>
+                    <option value="หญิง">หญิง</option>
+                  </select>
+                </div>
+                <div class="col-12 col-sm-12 col-md-6" >
+                  <label for="">เบอร์โทร</label>
+                  <input type="number" class="form-control" id="phone" name="phone" max="10" placeholder="เบอร์โทร">
+                </div>
+                <div class="col-12 col-sm-12 col-md-12">
+                  <label for="">ที่อยู่</label>
+                  <textarea class="form-control" id="address"  name="address" rows="4"></textarea>
+                </div>  
+                <div class="col-12 col-sm-12 col-md-12 mt-4 mb-3 text-center">
+                  <button type="submit" onclick="checkValues()"  class="btn btn-primary btn-block">ยืนยันการสมัคร</button>
+                 
+                </div>  
+              </div>
+              </div>
+              <div class="col-2"></div>
+          </div>
+        </form>    
+			</div>
+		
+		
+		</div>
+	</div> 
+	<!-- <div class="container login">
+		<div class="row ">
+			<div class="col-6 imagePublic">
+			   
+			</div>
+			<div class="col-6 my-auto">
+				<h2 class="text-uppercase text-center font-weight-bold mb-5" >ร้าน ...................</h2>
+				<h5 class="">กรุณากรอกข้อมูลเพื่อเข้าสู่ระบบ</h5>
+				<form id="loginFrom" action="login" method="POST">
+					<div class="form-group">
+					  <label for="exampleInputEmail1">email</label>
+					  <div class="input-group">
+						<div class="input-group-prepend">
+						  <div class="input-group-text icon">
+							<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-person-bounding-box" viewBox="0 0 16 16">
+								<path fill-rule="evenodd" d="M1.5 1a.5.5 0 0 0-.5.5v3a.5.5 0 0 1-1 0v-3A1.5 1.5 0 0 1 1.5 0h3a.5.5 0 0 1 0 1h-3zM11 .5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 16 1.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5zM.5 11a.5.5 0 0 1 .5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 1 0 1h-3A1.5 1.5 0 0 1 0 14.5v-3a.5.5 0 0 1 .5-.5zm15 0a.5.5 0 0 1 .5.5v3a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 1 .5-.5z"/>
+								<path fill-rule="evenodd" d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+							  </svg>
+						  </div>
+						</div>
+						<input type="text" class="form-control" id="username" name="username" placeholder="email">
+					  </div>
+					  <small id="emailHelp" class="form-text text-muted">เลขบัต</small>
+					</div>
+					<div class="form-group">
+					  <label for="exampleInputPassword1">รหัสผ่าน</label>
+					  <div class="input-group">
+						<div class="input-group-prepend">
+						  <div class="input-group-text icon">
+							<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-key" viewBox="0 0 16 16">
+								<path fill-rule="evenodd" d="M0 8a4 4 0 0 1 7.465-2H14a.5.5 0 0 1 .354.146l1.5 1.5a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0L13 9.207l-.646.647a.5.5 0 0 1-.708 0L11 9.207l-.646.647a.5.5 0 0 1-.708 0L9 9.207l-.646.647A.5.5 0 0 1 8 10h-.535A4 4 0 0 1 0 8zm4-3a3 3 0 1 0 2.712 4.285A.5.5 0 0 1 7.163 9h.63l.853-.854a.5.5 0 0 1 .708 0l.646.647.646-.647a.5.5 0 0 1 .708 0l.646.647.646-.647a.5.5 0 0 1 .708 0l.646.647.793-.793-1-1h-6.63a.5.5 0 0 1-.451-.285A3 3 0 0 0 4 5z"/>
+								<path d="M4 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+							</svg>
+						  </div>
+						</div>
+						<input type="text" class="form-control" id="password" name="password" placeholder="Password">
+					  </div>
+					  <small id="emailHelp" class="form-text text-muted">กรุณากรอกรหัสผ่าน</small>
+					</div>
+					<button type="submit" class="btn btn-success btn-block " >เข้าสู่ระบบ</button>
+					<p class="text-secondary text-center mt-3">คุณมีรหัสผ่านเเล้วหรือไม่ <span><a href="/register" class="">สมัครรหัสผ่าน</a></span></p>
+				  </form>
+			</div>
+		</div>
+	</div>  -->
+	 
+   
+	<script>
+		var uri = window.location.toString();
+		var message = '<%= message %>'
+	</script>
+	<%- include('footer1'); -%>
+	<script src="javascripts/register.js"></script>
+	<script src="javascripts/login.js"></script>
+	
+</body>
+</html>

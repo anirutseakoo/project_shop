@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maruai</title>
+    <%- include('header'); -%>
+</head>
+<body class="hold-transition sidebar-mini">
+    <div class="wrapper">
+      <!-- Navbar -->
+        <%- include('adminHeader'); -%>
+      <!-- /.navbar -->
+    
+      <!-- Main Sidebar Container -->
+        <%- include('adminSidebar'); -%>
+    
+      <!-- Content Wrapper. Contains page content -->
+      <div class="content-wrapper">
+        <div class="modal fade" tabindex="-1" role="dialog" id="modalEdit">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title font-weight-bold">เเก้ไขรายละเอียดของสินค้า</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <form id="stockEditFrom" method="POST" action="/stockEdit">
+                  <div class="mb-3">
+                      <label  class="form-label">ขนาดสินค้า</label>
+                      <select class="form-select form-control" name="Esize" id="Esize" >
+                            <option value="" selected>-----กรุณาเลือกขนาดสินค้า-----</option>     
+                      </select>
+                      <small class="text-secondary">เลือกขนาดสินค้า</small>
+                    </div>
+                  
+                  <div class="mb-3">
+                    <label  class="form-label">สีของสินค้า</label>
+                    <select class="form-select form-control" name="Ecolor" id="Ecolor" >
+                      <option value="" selected>-----กรุณาเลือกสีสินค้า-----</option>     
+                </select>
+                    <small class="text-secondary">กรุณากรอกสีสินค้า เช่น สีดำ</small>
+                  </div>
+                  <div class="mb-3">
+                    <label  class="form-label">จำนวนสินค้า</label>
+                    <input type="text" class="form-control d-none" name="Eid" id="Eid">
+                    <input type="text" class="form-control d-none" value="<%= product_id%>" name="Eproduct" id="Eproduct">
+                    <input type="number" class="form-control" name="Enum" id="Enum">
+                    <small class="text-secondary">กรุณากรอกจำนวนสินค้า</small>
+                  </div>
+                  <div class="mb-3 text-center">
+                      <button type="submit" onclick="confirmEdit()" class="btn btn-primary mr-3" >บันทึกข้อมูลสินค้า</button>
+                      <a data-dismiss="modal" class="btn btn-secondary">ยกเลิกการเเก้ไข</a>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="container pl-5 mt-5 mb-3">
+          <div class="row">
+            <div class="col-lg-12 col-md-12 text-center ">
+              <h3 class="font-weight-bold ">เพิ่มรายเอียดสินค้าในคลังของคุณ</h3>
+              <p>เพิ่มรายละเอียดสินค้าของคุณจำนวนเสื้อผ้าไซต์ขนาดจำนวนสินค้าร้านของฉัน</p>
+            </div>
+            <div class="col-12">
+              <div class="" role="document">
+                <div class="">
+  
+                  <div class="modal-body">
+                    
+                    <p class="font-weight-bold">รายละเอียดสินค้า</p>
+                    <span class="font-weight-bold ">ชื่อสินค้า :</span>  <span id="productName"></span>
+                    <span class="font-weight-bold ml-3">ประเภทสินค้า : </span>  <span id="productType"></span>
+                  
+                    <br>
+                    <span class="font-weight-bold "> รายละเอียดสินค้า :</span>  <span id="productDetail"></span>
+                    <br>
+                    <a  class="btn  btn-primary float-right mr-3 mt-2" id="productEdit" onclick="productOneInfo('<%= product_id %>')">
+                      เเก้ไขรายละเอียด
+                      </a>
+                      <a  class="btn  btn-danger float-right mr-3 mt-2" id="productDelete"  onclick="productDelete('<%= product_id %>')">
+                        ลบสินค้าและประเภททั้งหมดของสินค้านี้  
+                      </a>  
+                   
+                  </div>
+                 
+                </div>
+              </div>
+             </div>
+            
+          </div>
+         
+        </div>
+        <div class="container">
+        
+          <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-12 pl-3 pl-3">
+              <h5 class="mt-3 font-weight-bold text-center">เพิ่มรายละเอียด สี ขนาด ของสินค้า</h5>
+              <label  class="form-label">Size</label>
+              <div class="input-group mb-3">
+                
+                <input type="text" class="form-control" id="db_size" placeholder="กรุณากรอกขนาด">
+                <input type="number" class="form-control" id="db_price" placeholder="ราคาทุน">
+                <input type="number" class="form-control" id="db_plus" placeholder="ราคาขาย">
+                <span class="btn btn-outline-success" onclick="insertSize()">เพิ่มSize</span>
+              </div>
+              <div >
+                <table class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th scope="col">Size</th>
+                      <th scope="col">ราคาทุน</th>
+                      <th scope="col">ราคาขาย</th>
+                      <th scope="col">ลบ</th>
+                      <th scope="col">แก้ไข</th>
+                    </tr>
+                  </thead>
+                  <tbody id="show_size">
+                   
+                  </tbody>
+                </table>
+              
+              </div>
+              <label  class="form-label">สีของสินค้าและรูป</label>
+              <div class="input-group mb-3"> 
+                <input type="text" class="form-control" id="db_color" placeholder="กรุณากรอกสี">
+                <input type="file" class="form-control" id="db_image">
+                <span class="btn btn-outline-success" onclick="insertColor()">เพิ่มสี</span>
+              </div>
+            
+              <div >
+                <table class="table table-striped">
+                  <thead>
+                    <tr>
+               
+                      <th scope="col">รูป</th>
+                      <th scope="col">สี</th>
+                      <th scope="col">ลบ</th>
+                      <th scope="col">แก้ไข</th>
+                    </tr>
+                  </thead>
+                  <tbody id="show_color">
+                   
+                   
+                  </tbody>
+                </table>
+              
+              </div>
+             
+            
+            
+            </div>  
+            <div class="col-lg-6 col-md-6 col-sm-12 mt-1 pl-2">
+              <h5 class="mt-3 text-center font-weight-bold">เพิ่มรายละเอียดของสินค้า</h5>
+              <a  class="btn btn-success mt-4 float-right" data-toggle="modal" data-target="#insertModal">เพิ่มสินค้า</a>
+              <table class="table mt-4 text-center 2" ">
+                <thead class="stockThead">
+                  <tr >
+                   
+                    <th scope="col">size</th>
+                    <th scope="col">สี</th>
+                    <th scope="col">จำนวน</th>
+                    <th scope="col">เเก้ไข</th>
+                    <th scope="col">ลบ</th>
+                  </tr>
+                </thead>
+                <tbody id="stockTbody">
+                  
+                </tbody>
+              </table>
+              <div class="pl-3">
+                <div >
+                  <div class="modal" role="document">
+                    <div class="">
+                      <div class="mt-3 ">
+                        <h5 class="text-center font-weight-bold">สินค้าในร้านของฉัน</h5>
+                      </div>
+                      <div class="modal-body">
+                        <p class="font-weight-bold">รายละเอียดสินค้า</p>
+                        <p>ชื่อสินค้า : <span id="productName"></span></p>
+                        <!-- <p>หมวดสินค้า : <span id="productGender"></span></p> -->
+                        <p>ประเภทสินค้า : <span id="productType"></span></p>
+                        <p>ราคาทุน : <span id="productPrice"></span></p>
+                        <p>ราคาขาย : <span id="productPriceSell"></span></p>
+                        <p>รายละเอียดสินค้า : <span id="productDetail"></span></p>
+                        <p>ข้อมูลล่าสุดโดย : <span id="productUser"></span></p>
+                  
+                      </div>
+                      <div class="modal-footer" >
+                        <a  class="btn btn-block btn-primary" id="productEdit" onclick="productOneInfo('<%= product_id %>')">
+                          เเก้ไขรายละเอียด
+                          </a>
+                          <a  class="btn btn-block btn-danger" id="productDelete"  onclick="productDelete('<%= product_id %>')">
+                            ลบสินค้าและประเภททั้งหมดของสินค้านี้  
+                          </a>  
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              
+              </div>
+            </div>
+           
+   
+          </div>
+        </div>
+        <div class="modal fade" id="sizeModal" tabindex="-1" role="dialog">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">แก้ไข size</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <label for="">ขนาด size</label>
+                <input type="text" class="form-control" id="edit_size" placeholder="กรุณากรอกสี">
+                <label for="">ราคาทุน</label>
+                <input type="number" class="form-control" id="edit_price" placeholder="ราคาทุน">
+                <label for="">ราคาขาย</label>
+                <input type="number" class="form-control" id="edit_plus" placeholder="กรุณากรอกราคาขาย">
+                <input type="text" class="form-control d-none" id="edit_id0" p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="edit_size()">บันทึก</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal fade" id="colorModal" tabindex="-1" role="dialog">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">แก้ไขสี</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <input type="text" class="form-control" id="edit_color" placeholder="กรุณากรอกสี">
+                <input type="text" class="form-control d-none" id="edit_id" placeholder="กรุณากรอกสี">
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="edit_color()">บันทึก</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal fade" id="insertModal" tabindex="-1" role="dialog">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <!-- <h5 class="modal-title">เพิ่มสินค้า</h5> -->
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <form id="stockFrom" method="POST" action="/stockInsert" >
+                  <div class="mb-3">
+                      <label  class="form-label">ขนาดสินค้า</label>
+                      <select class="form-select form-control" name="size" id="size" >
+                            <option value="" selected>-----กรุณาเลือกขนาดสินค้า-----</option>
+                                
+                      </select>
+                      <small class="text-secondary">เลือกขนาดสินค้า</small>
+                    </div>
+                  
+                  <div class="mb-3">
+                    <label  class="form-label">สีของสินค้า</label>
+           
+                    <select class="form-select form-control" name="color" id="color" >
+                      <option value="" selected>-----กรุณาเลือกสี-----</option>
+                         
+                     </select>
+                    <small class="text-secondary">กรุณาเลือกสี</small>
+                  </div>
+                  <div class="mb-3">
+                    <label  class="form-label">จำนวนสินค้า</label>
+                    <input type="number" class="form-control" name="num" id="num">
+                    <input type="text" class="form-control d-none" name="product_id" id="product_id" value="<%=product_id %>">
+                    <small class="text-secondary">กรุณากรอกจำนวนสินค้า</small>
+                  </div>
+                  <div class="mb-3 text-center">
+                      <button type="submit" onclick="confirmInsert()" class="btn btn-primary mr-3" >บันทึกข้อมูลสินค้า</button>
+                      <a data-dismiss="modal" class="btn btn-secondary">กลับหน้าสินค้า</a>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal fade" id="editModal" tabindex="-1" role="dialog" >
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">เเก้ไขรายละเอียดสินค้า</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <form id="productEdit" method="POST" action="/productEdit">
+                  <div class="mb-3">
+                    <label  class="form-label">ชื่อสินค้า</label>
+                    <input type="text" class="form-control  d-none" name="editId" id="editId" >
+                    <input type="text" class="form-control" name="name" id="name">
+                    <small class="text-secondary">กรุณากรอกชื่อสินค้า</small>
+                  </div>
+                  <!-- <div class="mb-3">
+                      <label  class="form-label">หมวดสินค้า</label>
+                      <select class="form-select form-control" name="gender" id="gender" >
+                            <option value="" selected>-----กรุณาเลือกหมวดสินค้า-----</option>
+                            <option value="ชาย" >ชาย</option>
+                            <option value="หญิง" >หญิง</option>    
+                            <option value="เด็ก" >เด็ก</option>        
+                      </select>
+                      <small class="text-secondary">เลือกประเภทสินค้า</small>
+                    </div> -->
+                  <div class="mb-3">
+                    <label  class="form-label">ประเภทสินค้า</label>
+                    <select class=" form-control" id="type_id" name="type_id">
+                          <option value="" selected>-----กรุณาเลือกประเภทสินค้า-----</option>
+                          <% types.forEach(function(type){ %>
+                          <option value="<%= type._id %>"><%= type.name %></option>
+                          <% }); %>                
+                    </select>
+                    <small class="text-secondary">เลือกประเภทสินค้า</small>
+                  </div>
+            
+                  <div class="mb-3">
+                    <label >รายละเอียดสินค้า</label>
+                    <textarea class="form-control" name="detail" id="detail" cols="30" rows="3">
+                    </textarea>
+                  </div>
+                  <div class="mb-3 text-center">
+                      <button type="submit" class="btn btn-primary mr-3" onclick="checkData()">บันทึกข้อมูลสินค้า</button>
+                      <a data-dismiss="modal" class="btn btn-secondary">ยกเลิก</a>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- /.content-wrapper -->
+      <!-- Control Sidebar -->
+      <aside class="control-sidebar control-sidebar-dark">
+        <!-- Control sidebar content goes here -->
+      </aside>
+      <!-- /.control-sidebar -->
+    
+      <!-- Main Footer -->
+      <!-- <footer class="main-footer">
+        <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong>
+        All rights reserved.
+        <div class="float-right d-none d-sm-inline-block">
+          <b>Version</b> 3.1.0
+        </div>
+      </footer> -->
+    </div>
+    <!-- ./wrapper -->
+
+    <%- include('footer'); -%>
+    <script>
+      var message = '<%= message %>'
+      var product_id = '<%= product_id%>'
+      var uri = window.location.toString();
+    </script>
+    <script>
+
+    </script>
+    <script src="javascripts/stock.js"></script>
+  
+</body>
+</html>

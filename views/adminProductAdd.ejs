@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maruai</title>
+    <%- include('header'); -%>
+</head>
+<body class="hold-transition sidebar-mini">
+    <div class="wrapper">
+      <!-- Navbar -->
+        <%- include('adminHeader'); -%>
+      <!-- /.navbar -->
+    
+      <!-- Main Sidebar Container -->
+        <%- include('adminSidebar'); -%>
+    
+      <!-- Content Wrapper. Contains page content -->
+      <div class="content-wrapper">
+        <div class="container pl-5 mt-1">
+            <div class="row">
+             
+                 <div class="col-12 mt-5">
+                   <h3 class="font-weight-bold">เพิ่มสินค้าของฉัน</h3>
+                   <p>หน้านี้เป็นหน้าเพิ่มสินค้าเท่านั้นไม่ได้เกี่ยวกับของในสต็อก</p>
+                </div>
+                <div class="col">
+                   <form id="productAdd" method="POST" action="/productInsert">
+                       <div class="mb-3">
+                         <label  class="form-label">ชื่อสินค้า</label>
+                         <input type="text" class="form-control" name="name" id="name">
+                         <small class="text-secondary">กรุณากรอกชื่อสินค้า</small>
+                       </div>
+                       <!-- <div class="mb-3">
+                           <label  class="form-label">หมวดสินค้า</label>
+                           <select class="form-select form-control" name="gender" id="gender" >
+                                 <option value="" selected>-----กรุณาเลือกหมวดสินค้า-----</option>
+                                 <option value="ชาย" >ชาย</option>
+                                 <option value="หญิง" >หญิง</option>    
+                                 <option value="เด็ก" >เด็ก</option>        
+                           </select>
+                           <small class="text-secondary">เลือกประเภทสินค้า</small>
+                         </div> -->
+                       <div class="mb-3">
+                         <label  class="form-label">ประเภทสินค้า</label>
+                         <select class=" form-control" id="type_id" name="type_id">
+                               <option value="" selected>-----กรุณาเลือกประเภทสินค้า-----</option>
+                               <% types.forEach(function(type){ %>
+                               <option value="<%= type._id %>"><%= type.name %></option>
+                               <% }); %>                
+                         </select>
+                         <small class="text-secondary">เลือกประเภทสินค้า</small>
+                       </div>
+ 
+                    
+                       <div class="mb-3">
+                         <label >รายละเอียดสินค้า</label>
+                         <textarea class="form-control" name="detail" id="detail" cols="30" rows="3"></textarea>
+                       </div>
+                       <div class="mb-3 text-center">
+                           <button type="submit" class="btn btn-primary mr-3" onclick="checkData()">บันทึกข้อมูลสินค้า</button>
+                           <a href="/productAdmin" class="btn btn-secondary">ยกเลิกการเพิ่มข้อมูล</a>
+                       </div>
+                     </form>
+                </div>
+            </div>
+        </div>
+     </div>
+      <!-- /.content-wrapper -->
+    
+      <!-- Control Sidebar -->
+      <aside class="control-sidebar control-sidebar-dark">
+        <!-- Control sidebar content goes here -->
+      </aside>
+      <!-- /.control-sidebar -->
+    
+      <!-- Main Footer -->
+      <!-- <footer class="main-footer">
+        <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong>
+        All rights reserved.
+        <div class="float-right d-none d-sm-inline-block">
+          <b>Version</b> 3.1.0
+        </div>
+      </footer> -->
+    </div>
+    <!-- ./wrapper -->
+    
+    <%- include('footer'); -%>
+    <script>
+      var message = '<%= message %>'
+      var uri = window.location.toString(); 
+    </script>
+    <script src="javascripts/product.js"></script>
+  
+</body>
+</html>

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <%- include('styles'); -%>
+  </head>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Prompt:wght@300&display=swap');
+      *{
+        font-family: 'Prompt', sans-serif !important;
+      }
+  </style>
+  <body>
+    <!-- ===============================================-->
+    <!--    Main Content-->
+    <!-- ===============================================-->
+    <main class="main" id="top">
+      <%- include('navbar'); -%>
+      
+      <section class="pt-6 bg-600" id="home" style="background-color: white !important;">
+        <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+          <div class="carousel-inner">
+            <div class="carousel-item active">
+              <div class="container">
+                <div class="row align-items-center">
+                  <div class="col-md-5 col-lg-6 order-0 order-md-1 text-end">
+                    <img class="pt-7 pt-md-0 w-100" 
+                    src="images/bg01.png" width="470" alt="hero-header" /></div>
+                  <div class="col-md-7 col-lg-6 text-md-start text-center py-6">
+                    <h4 class="fw-bold font-sans-serif">Maruai bikini</h4>
+                    <h1 class="fs-6 fs-xl-7 mb-1">ชุดว่ายน้ำบิกินี่</h1>
+                    <h1 class="fs-6 fs-xl-7 mb-5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;มีหลากหลายสี</h1>
+                    <a class="btn btn-info me-2" href="/list" role="button">รายการสินค้า</a>
+                    <a class="btn btn-outline-secondary" href="#footer" role="button">ติดต่อเรา</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="carousel-item">
+              <div class="container">
+                <div class="row align-items-center">
+                  <div class="col-md-5 col-lg-6 order-0 order-md-1 text-end">
+                    <img class="pt-7 pt-md-0 w-100" 
+                    src="https://image.similarpng.com/very-thumbnail/2021/01/Fashion-shop-logo-design-on-transparent-background-PNG.png" width="470" alt="hero-header" /></div>
+                  <div class="col-md-7 col-lg-6 text-md-start text-center py-6">
+                    <h4 class="fw-bold font-sans-serif">Become Master2</h4>
+                    <h1 class="fs-6 fs-xl-7 mb-5">Learn New Skills Online Find Best Courses</h1>
+                    <a class="btn btn-info me-2" href="#!" role="button">Get A Quote</a>
+                    <a class="btn btn-outline-secondary" href="#!" role="button">Read more</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="carousel-item">
+              <div class="container">
+                <div class="row align-items-center">
+                  <div class="col-md-5 col-lg-6 order-0 order-md-1 text-end">
+                    <img class="pt-7 pt-md-0 w-100" 
+                    src="https://image.similarpng.com/very-thumbnail/2021/01/Fashion-shop-logo-design-on-transparent-background-PNG.png" width="470" alt="hero-header" /></div>
+                  <div class="col-md-7 col-lg-6 text-md-start text-center py-6">
+                    <h4 class="fw-bold font-sans-serif">Become Master3</h4>
+                    <h1 class="fs-6 fs-xl-7 mb-5">Learn New Skills Online Find Best Courses</h1>
+                    <a class="btn btn-info me-2" href="#!" role="button">Get A Quote</a>
+                    <a class="btn btn-outline-secondary" href="#!" role="button">Read more</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
+        </div>
+      
+      </section>
+   
+      <section class="py-0 mt-5">
+       
+        <div class="container">
+          <div class="col-lg-7 mx-auto text-center mb-4">
+            <h5 class="fw-bold fs-3 fs-lg-5 lh-sm ">สินค้าใหม่</h5>
+          </div>
+          <div class="row h-100" id="product_new">
+            
+            
+          </div>
+        </div>
+        <!-- end of .container-->
+
+      </section>
+      <section class="py-0 mt-7 mb-5">
+       
+        <div class="container">
+          <div class="col-lg-7 mx-auto text-center mb-5">
+            <h5 class="fw-bold fs-3 fs-lg-5 lh-sm mb-3">สินค้ายอดฮิต</h5>
+          </div>
+          <div class="row h-100"id="product_dee">
+            
+            
+          </div>
+        </div>
+        <!-- end of .container-->
+
+      </section>
+   
+      
+     
+    
+
+      
+
+
+     
+    <%- include('footer'); -%>
+
+    </main>
+    <!-- ===============================================-->
+    <!--    End of Main Content-->
+    <!-- ===============================================-->
+
+
+
+    
+    <%- include('js'); -%>
+ 
+    <script src="javascripts/productAll.js"></script>
+  
+  </body>
+
+</html>
